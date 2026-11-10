@@ -234,7 +234,50 @@
     main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
     .board, .mats, .g-links, .g-stats { grid-template-columns: 1fr; }
   }
-  @media (max-width: 480px) { .g-stats { grid-template-columns: 1fr; } .topbar h1 { font-size: 20px; } }
+  .hbars { display: none; }
+  @media (max-width: 600px) {
+    body { font-size: 14.5px; }
+    main { padding-top: 14px; }
+    .card { padding: 16px; border-radius: 16px; }
+    .grid { gap: 12px; margin-top: 12px; }
+    .topbar { flex-direction: column; align-items: flex-start; padding: 16px; border-radius: 16px; }
+    .topbar h1 { font-size: 20px; }
+    .team { flex-wrap: wrap; }
+    .av { width: 28px; height: 28px; font-size: 12px; }
+    .datechip { white-space: normal; font-size: 12.5px; padding: 6px 10px; }
+    .g-stats { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px; }
+    .stat { padding: 12px; gap: 4px; }
+    .stat .top { font-size: 11.5px; line-height: 1.25; }
+    .stat .ico, .stat .foot { display: none; }
+    .stat .val { font-size: 24px; }
+    .stat .val small { font-size: 11px; margin-left: 2px; }
+    .qlink { padding: 12px 14px; gap: 12px; }
+    .qlink .qi { width: 38px; height: 38px; border-radius: 10px; }
+    .card-h { flex-wrap: wrap; }
+    svg#timeChart, #timeChart + .hbars + .legend { display: none; }
+    .hbars { display: flex; flex-direction: column; gap: 6px; }
+    .hb { display: grid; grid-template-columns: 26px minmax(0, 1fr) 70px 40px; align-items: center; gap: 10px; padding: 7px 8px; border: 0; border-radius: 10px; background: transparent; text-align: left; cursor: pointer; }
+    .hb.on { background: var(--sunk); }
+    .hb-name { font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hb-track { height: 8px; border-radius: 4px; background: var(--sunk); overflow: hidden; }
+    .hb.on .hb-track { background: var(--card); }
+    .hb-track i { display: block; height: 100%; border-radius: 4px; background: var(--lime); }
+    .hb.on .hb-track i { background: var(--side); }
+    :root[data-theme="dark"] .hb.on .hb-track i { background: #EEF1EC; }
+    .hb-t { font-size: 12.5px; text-align: right; }
+    .donut-wrap { justify-content: center; }
+    .donut-wrap svg { width: 130px; height: 130px; }
+    .sec-title { margin-top: 26px; }
+    .notice { font-size: 13.5px; padding: 12px 14px; }
+    .tab { font-size: 13px; padding: 6px 10px 6px 6px; }
+    .role-h h3 { font-size: 18px; }
+    .line { grid-template-columns: 44px minmax(0, 1fr); gap: 10px; padding: 12px 0; }
+    .say { font-size: 14.5px; }
+    .work .band { padding: 14px 16px; }
+    .work .body { padding: 0 16px 16px; }
+    .side .brand { display: none; }
+  }
+  @media (max-width: 600px) and (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hb.on .hb-track i { background: #EEF1EC; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -280,6 +323,7 @@
         <div class="card">
           <div class="card-h"><h2>Speaking time by role</h2><span class="pill">Minutes · total 15:00</span></div>
           <svg class="chart" id="timeChart" viewBox="0 0 640 230" role="img" aria-label="Speaking time per role"></svg>
+          <div class="hbars" id="timeBars"></div>
           <div class="legend"><span><i style="background:var(--lime)"></i>Speaking time</span><span><i style="background:var(--side)"></i>Selected role</span><span class="muted">Click a bar to open its script</span></div>
         </div>
         <div class="card">
@@ -486,6 +530,7 @@
       s += `<text x="${bx + bw / 2}" y="${B + 33}" text-anchor="middle">${people[x.r] || x.t.split(" ")[0]}</text>`;
     });
     $("timeChart").innerHTML = s;
+    $("timeBars").innerHTML = roles.map(x => `<button class="hb${x.r === current ? " on" : ""}" data-r="${x.r}"><span class="ltr">${x.r}</span><span class="hb-name">${people[x.r] || x.t}</span><span class="hb-track"><i style="width:${x.min / max * 100}%"></i></span><span class="mono hb-t">${fmt(x.min)}</span></button>`).join("");
   }
 
   function donut() {
