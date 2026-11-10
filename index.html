@@ -219,11 +219,6 @@
       <a href="#tasks"><svg viewBox="0 0 24 24"><path d="M4 6l2 2 4-4M4 14l2 2 4-4"/><path d="M13 6h7M13 14h7M4 20h16"/></svg>To-do</a>
       <a href="#materials"><svg viewBox="0 0 24 24"><path d="M4 4h6l2 3h8v13H4z"/></svg>Materials</a>
     </nav>
-    <div class="promo">
-      <div class="big" id="promoDays">–</div>
-      <p id="promoText">days to our presentation, Thu 12 Nov</p>
-      <a href="olive-young-france-presentation.html" target="_blank" rel="noopener">Open the deck ↗</a>
-    </div>
   </aside>
 
   <main>
@@ -258,16 +253,6 @@
         </div>
       </div>
 
-      <div class="grid g-21">
-        <div class="card">
-          <div class="card-h"><h2>Run of show</h2><span class="pill">In order</span></div>
-          <div class="tbl"><table><thead><tr><th>Role</th><th>Person</th><th>Slides</th><th>Share of time</th><th>Time</th></tr></thead><tbody id="rosBody"></tbody></table></div>
-        </div>
-        <div class="card">
-          <div class="card-h"><h2>Due first</h2><span class="pill">Wed 11 Nov</span></div>
-          <div class="due" id="dueList"></div>
-        </div>
-      </div>
     </section>
 
     <section id="roles">
@@ -428,8 +413,6 @@
     const d = Math.round((PRESENTATION - today) / 86400000);
     const big = d > 0 ? d : d === 0 ? "Today" : "Done";
     $("statDays").innerHTML = d > 0 ? `${d}<small>${d === 1 ? "day" : "days"}</small>` : big;
-    $("promoDays").textContent = d > 0 ? `${d} ${d === 1 ? "day" : "days"}` : big;
-    $("promoText").textContent = d > 0 ? "to our presentation, Thu 12 Nov" : d === 0 ? "Presentation day. Good luck!" : "Presented on Thu 12 Nov";
     const done = tasks.filter(t => t.s === "done").length;
     $("statTasks").innerHTML = `${done}<small>/ ${tasks.length}</small>`;
     $("statTasksFoot").innerHTML = `<span class="tag warn">${tasks.filter(t => t.s === "urgent").length} due first</span> by Wed 11 Nov`;
@@ -529,7 +512,7 @@
   }), { rootMargin: "-30% 0px -65% 0px" });
   navLinks.forEach(a => { const s = document.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
 
-  header(); timeChart(); donut(); ros(); tabs(); panel(); board();
+  header(); timeChart(); donut(); tabs(); panel(); board();
 </script>
 
 </body>
