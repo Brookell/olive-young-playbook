@@ -165,6 +165,36 @@
   .qa div { font-size: 14px; color: var(--ink-2); }
   .qa b { display: block; color: var(--ink); margin-bottom: 2px; }
 
+  .notice { margin-top: 14px; padding: 14px 18px; border-radius: 16px; background: var(--warn-soft); color: var(--ink); font-size: 14.5px; line-height: 1.55; border-left: 4px solid var(--warn); }
+  .notice b { color: var(--warn); }
+  .tag.ex { background: var(--sunk); color: var(--ink-2); border: 1px dashed var(--muted); }
+
+  /* quick links + our work */
+  .g-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .qlink { display: flex; align-items: center; gap: 14px; text-decoration: none; transition: transform .2s; }
+  .qlink:hover { transform: translateY(-2px); }
+  .qlink .qi { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex: none; background: var(--lime); color: var(--lime-ink); }
+  .qlink.dk .qi { background: var(--side); color: var(--lime); }
+  .qlink.tl .qi { background: var(--teal); color: #fff; }
+  .qlink .qi svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .qlink b { display: block; font-size: 15px; }
+  .qlink span { font-size: 13px; color: var(--muted); }
+  .qlink .arrow { margin-left: auto; font-weight: 700; color: var(--muted); }
+  .works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
+  .work { display: flex; flex-direction: column; gap: 10px; padding: 0; overflow: hidden; }
+  .work .band { padding: 18px 22px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .work .band b { font-size: 18px; font-weight: 800; }
+  .work .band small { display: block; font-size: 12.5px; font-weight: 600; opacity: .75; margin-top: 2px; }
+  .work .band.l { background: var(--lime); color: var(--lime-ink); }
+  .work .band.d { background: var(--side); color: var(--side-ink); }
+  .work .band.t { background: var(--teal); color: #fff; }
+  .work .band.g { background: var(--sunk); color: var(--ink); }
+  .work .body { padding: 0 22px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .work .body p { font-size: 14px; color: var(--ink-2); }
+  .work .facts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .work .facts span { padding: 4px 9px; border-radius: 8px; background: var(--sunk); font-size: 12.5px; color: var(--ink-2); }
+  .work .body a { margin-top: auto; align-self: flex-start; padding: 8px 14px; border-radius: 10px; background: var(--side); color: var(--side-ink); font-weight: 700; font-size: 13.5px; text-decoration: none; }
+
   /* tasks */
   .board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .col-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -191,7 +221,7 @@
   .sec-title p { font-size: 13.5px; color: var(--muted); }
 
   @media (max-width: 1100px) {
-    .g-21, .panel { grid-template-columns: 1fr; }
+    .g-21, .panel, .works { grid-template-columns: 1fr; }
   }
   @media (max-width: 860px) {
     .app { grid-template-columns: 1fr; }
@@ -202,7 +232,7 @@
     .side nav a { padding: 7px 10px; white-space: nowrap; font-size: 13.5px; }
     .side nav svg { display: none; }
     main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-    .board, .mats { grid-template-columns: 1fr; }
+    .board, .mats, .g-links, .g-stats { grid-template-columns: 1fr; }
   }
   @media (max-width: 480px) { .g-stats { grid-template-columns: 1fr; } .topbar h1 { font-size: 20px; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -216,7 +246,8 @@
       <a href="#dashboard" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a>
       <a href="#roles"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h10M4 20h7"/></svg>Scripts</a>
       <a href="#tasks"><svg viewBox="0 0 24 24"><path d="M4 6l2 2 4-4M4 14l2 2 4-4"/><path d="M13 6h7M13 14h7M4 20h16"/></svg>To-do</a>
-      <a href="#materials"><svg viewBox="0 0 24 24"><path d="M4 4h6l2 3h8v13H4z"/></svg>Materials</a>
+      <a href="#work"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6L3.4 9.3l6-.7z"/></svg>Our work</a>
+      <a href="#materials"><svg viewBox="0 0 24 24"><path d="M4 4h6l2 3h8v13H4z"/></svg>Course brief</a>
     </nav>
   </aside>
 
@@ -239,6 +270,12 @@
         <div class="card stat"><div class="top">Presentation<span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></span></div><div class="val">23<small>slides</small></div><div class="foot"><span class="tag teal">15:00</span> 5 chapters · 7 speakers</div></div>
       </div>
 
+      <div class="grid g-links">
+        <a class="card qlink" href="olive-young-france-presentation.html" target="_blank" rel="noopener"><span class="qi"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></span><span><b>Presentation</b><span>23-slide web deck</span></span><span class="arrow">↗</span></a>
+        <a class="card qlink dk" href="olive-young-france-research.html" target="_blank" rel="noopener"><span class="qi"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span><b>Research brief</b><span>Market, consumers, competitors</span></span><span class="arrow">↗</span></a>
+        <a class="card qlink tl" href="culture-map-group-marker.html" target="_blank" rel="noopener"><span class="qi"><svg viewBox="0 0 24 24"><circle cx="6" cy="8" r="2"/><circle cx="14" cy="6" r="2"/><circle cx="18" cy="14" r="2"/><circle cx="9" cy="16" r="2"/><path d="M3 12h18"/></svg></span><span><b>Culture Map tool</b><span>Our dots and group ranges</span></span><span class="arrow">↗</span></a>
+      </div>
+
       <div class="grid g-21">
         <div class="card">
           <div class="card-h"><h2>Speaking time by role</h2><span class="pill">Minutes · total 15:00</span></div>
@@ -255,6 +292,7 @@
 
     <section id="roles">
       <div class="sec-title"><h2>Roles &amp; scripts</h2><p>Say it in your own words. Never read the slides.</p></div>
+      <div class="notice"><b>These scripts are only examples.</b> They show one way to cover each part. After you pick your role, you decide what to say and how, and you can change anything. Orange parts need our real team content.</div>
       <div class="card" style="margin-top:14px;padding:12px">
         <div class="tabs" id="tabs" role="tablist"></div>
       </div>
@@ -266,13 +304,30 @@
       <div class="board" style="margin-top:14px" id="board"></div>
     </section>
 
-    <section id="materials">
-      <div class="sec-title"><h2>Materials</h2><p>Open in Chrome on a laptop.</p></div>
-      <div class="mats" style="margin-top:14px">
-        <div class="card mat"><span class="kind">Main file</span><h3>Presentation</h3><p>The 23-slide web deck we present from. Role letters will be replaced by names.</p><a href="olive-young-france-presentation.html" target="_blank" rel="noopener">Open the deck ↗</a></div>
-        <div class="card mat"><span class="kind">Background</span><h3>Market research brief</h3><p>French market, Gen Z data, competitors, Olive Young figures, EU rules. Every fact marked Verified or Reported.</p><a href="olive-young-france-research.html" target="_blank" rel="noopener">Open the brief ↗</a></div>
-        <div class="card mat"><span class="kind">Tool</span><h3>Culture Map Group Marker</h3><p>Our seven dots and the agreed group ranges. Linked from slides 13 and 20.</p><a href="culture-map-group-marker.html" target="_blank" rel="noopener">Open the tool ↗</a></div>
+    <section id="work">
+      <div class="sec-title"><h2>Our work</h2><p>Everything we have made so far. Open in Chrome on a laptop.</p></div>
+      <div class="works">
+        <div class="card work"><div class="band l"><span><b>Presentation</b><small>Main deliverable</small></span><span>01</span></div>
+          <div class="body"><p>The web deck we present on Thursday: our mission, the five questions, the team playbook and the 12-month plan.</p>
+            <div class="facts"><span>23 slides</span><span>5 chapters</span><span>~15 min</span><span>Keys: ← → O F</span></div>
+            <a href="olive-young-france-presentation.html" target="_blank" rel="noopener">Open the deck ↗</a></div></div>
+        <div class="card work"><div class="band d"><span><b>Market research brief</b><small>Background for Q&amp;A</small></span><span>02</span></div>
+          <div class="body"><p>French beauty market, Gen Z data, competitors in Paris, Olive Young’s figures, EU rules and a SWOT, with 9 charts.</p>
+            <div class="facts"><span>17 sources</span><span>Verified / Reported labels</span><span>Linked from slide 20</span></div>
+            <a href="olive-young-france-research.html" target="_blank" rel="noopener">Open the brief ↗</a></div></div>
+        <div class="card work"><div class="band t"><span><b>Culture Map Group Marker</b><small>Collaboration tool</small></span><span>03</span></div>
+          <div class="body"><p>Each of us placed our own dot on Erin Meyer’s eight dimensions; then we dragged the group ranges together and locked them.</p>
+            <div class="facts"><span>7 members</span><span>8 dimensions</span><span>Linked from slides 13 and 20</span></div>
+            <a href="culture-map-group-marker.html" target="_blank" rel="noopener">Open the tool ↗</a></div></div>
+        <div class="card work"><div class="band g"><span><b>Team hub</b><small>This page</small></span><span>04</span></div>
+          <div class="body"><p>Roles, example scripts, the to-do list and links to everything. Updated by Brooke when roles and content come in.</p>
+            <div class="facts"><span>7 roles</span><span>Example scripts</span><span>To-do board</span></div>
+            <a href="#dashboard">Back to the dashboard</a></div></div>
       </div>
+    </section>
+
+    <section id="materials">
+      <div class="sec-title"><h2>Course brief</h2><p>What the professor expects.</p></div>
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
         <div class="card"><div class="card-h"><h2>What the professor asks</h2></div>
           <ol class="req"><li>Who are you, and who is your team?</li><li>What makes it unique, with its own identity?</li><li>What are the cultural differences in your team?</li><li>How do you make these differences opportunities?</li><li>How do you make your multicultural team efficient?</li></ol>
@@ -461,12 +516,12 @@
     const x = roles.find(v => v.r === current);
     $("panel").innerHTML = `
       <div class="card">
-        <div class="role-h"><span class="ltr" style="width:34px;height:34px;font-size:16px">${x.r}</span><h3>${x.t}</h3>${people[x.r] ? `<span class="tag teal">${people[x.r]}</span>` : `<span class="tag warn">Not assigned yet</span>`}</div>
+        <div class="role-h"><span class="ltr" style="width:34px;height:34px;font-size:16px">${x.r}</span><h3>${x.t}</h3><span class="tag ex">Example script</span>${people[x.r] ? `<span class="tag teal">${people[x.r]}</span>` : `<span class="tag warn">Not assigned yet</span>`}</div>
         <div class="role-meta"><span class="pill">Slides <b class="mono">${x.slides}</b></span><span class="pill">Time <b class="mono">${fmt(x.min)}</b></span></div>
         <div class="owns">${x.owns.map(o => `<span>${o}</span>`).join("")}</div>
         <div class="script">${x.script.map(l => `<div class="line"><div class="sn"><span class="badge">s.${l[0]}</span><small>${l[1]}</small></div><div class="say">${l[2]}</div></div>`).join("")}
           <div class="handoff">${x.handoff}</div></div>
-        <button class="btn" id="copyBtn">Copy my script</button>
+        <button class="btn" id="copyBtn">Copy example script</button>
       </div>
       <div class="side-col">
         <div class="card"><div class="card-h"><h2>Prepare before Thursday</h2></div><ul>${x.prep.map(p => `<li>${p}</li>`).join("")}</ul></div>
