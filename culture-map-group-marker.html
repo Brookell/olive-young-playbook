@@ -668,7 +668,7 @@
 
     const colors = ["#1976d2", "#ef6c00", "#2e7d32", "#7b1fa2", "#c2185b", "#00838f", "#5d4037"];
     const defaultPeople = ["Member 1", "Member 2", "Member 3", "Member 4", "Member 5", "Member 6", "Member 7"];
-    const restoredPeople = ["Brooke", "yui", "yewon", "Swann", "eungyo", "taeyeon", "xin"];
+    const restoredPeople = ["Brooke", "Yui", "Yewon", "Swann", "Erin", "Taeyeon", "Xin"];
     const fallbackScores = {
       communicating: [89, 80, 46, 83, 68, 85, 58],
       evaluating: [79, 80, 82, 77, 63, 23, 67],
@@ -708,7 +708,7 @@
       }
 
       return {
-        people: defaultPeople,
+        people: [...restoredPeople],
         scores: structuredClone(fallbackScores),
         groupRanges: createDefaultRanges()
       };
@@ -740,9 +740,9 @@
       if (isResetDefault || !hasCompleteScores) {
         state.people = [...restoredPeople];
         state.scores = structuredClone(fallbackScores);
-      } else if (!Array.isArray(state.people) || state.people.length !== defaultPeople.length) {
-        state.people = [...restoredPeople];
       }
+      // Final team view: always show the agreed names.
+      state.people = [...restoredPeople];
 
       if (!state.groupRanges || typeof state.groupRanges !== "object") {
         state.groupRanges = createDefaultRanges();

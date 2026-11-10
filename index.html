@@ -516,20 +516,20 @@
 
 <script>
   const PRESENTATION = new Date(2026, 10, 12);
-  const members = ["Brooke", "yui", "yewon", "Swann", "eungyo", "taeyeon", "xin", "Minjeong"];
+  const members = ["Brooke", "Yui", "Yewon", "Swann", "Erin", "Taeyeon", "Xin", "Minjeong"];
   const memberColors = ["#2E6B4F", "#D9822B", "#4C7BD9", "#8E5BB5", "#D14D72", "#2A9D8F", "#8C6A4F", "#C9A227"];
 
   // Where each member comes from. Empty string = not sent yet.
-  const memberFrom = { Brooke: "", yui: "", yewon: "", Swann: "", eungyo: "", taeyeon: "", xin: "", Minjeong: "" };
+  const memberFrom = { Brooke: "China", Yui: "Japan", Yewon: "Korea", Swann: "France", Erin: "Korea", Taeyeon: "Korea", Xin: "China", Minjeong: "Korea" };
 
   // Assigned people: fill in once roles are chosen. Empty string = not assigned yet.
-  const people = { A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: "Brooke" };
+  const people = { A: "Erin", B: "Yui", C: "Taeyeon", D: "Yewon", E: "Minjeong", F: "Xin", G: "Swann", H: "Brooke" };
 
   const roles = [
     { r: "A", t: "Opener", slides: "1–4", min: 2,
       owns: ["Opening and the five questions", "Note-taker after meetings"],
       script: [
-        ["1", "Cover", "Good morning everyone. We are Brooke, yui, yewon, Swann, eungyo, taeyeon, xin and Minjeong. Today we show you how our multicultural team works while preparing Olive Young’s entry into France."],
+        ["1", "Cover", "Good morning everyone. We are Brooke, Yui, Yewon, Swann, Erin, Taeyeon, Xin and Minjeong. Today we show you how our multicultural team works while preparing Olive Young’s entry into France."],
         ["2", "Hook", "Before we start, a quick question. Raise your hand if you own at least one Korean skincare product. <span class='cue'>wait, react</span> <span class='cue'>press →</span> Now keep your hand up if you knew exactly which one to buy first. <span class='cue'>react</span> That confusion is where our project starts."],
         ["3", "Mission", "We are an international team with one mission: bring Olive Young to France. But a good plan needs a team that works. So today we answer five questions: who we are, what makes us unique, our cultural differences, how we turn them into opportunities, and how we stay efficient."],
         ["4", "Golden Circle", "First, the company. Olive Young’s why: everyone can discover their unique beauty and a healthy lifestyle. How: a seamless shopping experience, from trendy products to daily self-care. What: a global platform for Korean beauty and new Korean brands."]
@@ -541,20 +541,20 @@
       owns: ["Target market, product, customer journey", "Months 1–3 lead: customer research"],
       script: [
         ["5", "Proposal", "Our proposal is the K-Beauty Discovery Lab in Paris. The idea: don’t sell a catalogue, guide a routine. Our target is Gen Z skincare explorers in Paris. Demand is growing fast: Korean cosmetics exports to France grew 71.5% in 2025. And young French women already use about eight skincare products, so they don’t need a first routine; they want a better one."],
-        ["6", "Kit + journey", "This is our product, the Routine Découverte kit: a cleanser and a sun cream from BRINGGREEN, and a repair cream from BIOHEAL BOH. All three are Olive Young’s own brands, so you can only get them from Olive Young. The journey: find your routine online in French, get a skin consultation at our Paris pop-up, swap three steps of your routine, with a gift, and come back with refill reminders."]
+        ["6", "Kit + journey", "This is our product, the Routine Découverte kit: a cleanser from BRINGGREEN, and a repair cream and a sun cream from BIOHEAL BOH. All three are Olive Young’s own brands, so you can only get them from Olive Young. The journey: find your routine online in French, get a skin consultation at our Paris pop-up, swap three steps of your routine, with a gift, and come back with refill reminders."]
       ],
       handoff: "A good product needs a good team. <b>[C]</b> will introduce who we are.",
       prep: ["Confirm the price of the BIOHEAL BOH cream (Olive Young app)", "Read sections 01–03 of the research brief"],
       qa: [
         ["Isn’t K-beauty already in Paris?", "Yes: Sephora, Galeries Lafayette, Monoprix, and Moida on the Champs-Élysées, which even offers skin diagnosis. None of them has Olive Young’s own brands or our French routine finder with refills."],
         ["Why not just sell through Sephora?", "Sephora’s deal with Olive Young covers the US, Asia and the UK in 2027, not France. And our own lab builds Olive Young’s brand, not Sephora’s."],
-        ["How much is the kit?", "In Korea the cleanser is ₩13,000 and the sun cream ₩20,000. We would set the French price after testing in months 1–3."]
+        ["How much is the kit?", "On Olive Young Global, the cleanser is US$18, the repair cream from US$37 and the sun cream US$35. We would set the French price after testing in months 1–3."]
       ] },
     { r: "C", t: "Team Host", slides: "7–8, 18", min: 2.25,
       owns: ["Chapter 01, the team round and the Trust Pyramid", "Trust: check-ins, task buddies"],
       script: [
         ["7", "Chapter 01", "Our first question: who are we?"],
-        ["8", "Meet the team", "We are eight people from <span class='fill'>[N]</span> cultural backgrounds, and each of us has a role. Let’s introduce ourselves, one sentence each. <span class='cue'>each member, A to H: “I’m [name], from [background]. I’m our [role], so I [one responsibility].”</span> <span class='cue'>keep it to about 10 seconds each</span>"],
+        ["8", "Meet the team", "We are eight people from four cultural backgrounds (China, France, Japan and Korea), and each of us has a role. Let’s introduce ourselves, one sentence each. <span class='cue'>each member, A to H: “I’m [name], from [background]. I’m our [role], so I [one responsibility].”</span> <span class='cue'>keep it to about 10 seconds each</span>"],
         ["18", "Trust Pyramid", "<span class='cue'>you come back after [G] opens chapter 05</span> To work well, a team needs trust first. We used Lencioni’s Trust Pyramid, with one action per layer, from the bottom. Trust: biweekly check-ins and task buddies. Healthy conflict: a challenge round before key decisions. Commitment: a decision deadline and a final owner. Accountability: a weekly task board, one owner per task. Results: one team scorecard, reviewed every month. Each layer has an owner. <span class='cue'>hand back: “[G] will show how we put this into action.”</span>"]
       ],
       handoff: "After slide 8: “Now you know who we are. <b>[D]</b> will show you what makes us unique.” After slide 18: hand back to <b>[G]</b>.",
@@ -564,7 +564,7 @@
       owns: ["Vision Tree and Blazon", "Months 10–12 support: training playbook"],
       script: [
         ["9", "Chapter 02", "Second question: what makes our team unique?"],
-        ["10", "Vision Tree", "This is our Vision Tree. The roots are our purpose: use our cultural diversity and market knowledge to help Olive Young grow in Europe. The branches are our ambitions: a comfortable, efficient team, learning together, and turning differences into creative ideas. Eight values feed the tree. For example, <span class='fill'>[value]</span> means that in our meetings we <span class='fill'>[real behaviour]</span>."],
+        ["10", "Vision Tree", "This is our Vision Tree. The roots are our purpose: combine our cultural backgrounds and market knowledge to help Olive Young expand into Europe. Around the roots are our eight values. The fruit are our three ambitions: a comfortable, efficient team, learning and growing together, and turning differences into creative ideas. For example, <span class='fill'>[value]</span> means that in our meetings we <span class='fill'>[real behaviour]</span>."],
         ["11", "Blazon", "And this is our team blazon. Our achievements: <span class='fill'>[3]</span>. What we like most: <span class='fill'>[…]</span>. Our hidden qualities: <span class='fill'>[3]</span>. What we find difficult right now: <span class='fill'>[…]</span>. And our motto: <span class='fill'>[…]</span>."]
       ],
       handoff: "Being unique also means being different. <b>[E]</b> will show you how different we really are.",
@@ -586,7 +586,7 @@
       owns: ["Game rules and audience scenarios", "Runs challenge rounds"],
       script: [
         ["14", "Chapter 04", "Fourth question: how do we turn differences into opportunities?"],
-        ["15", "Game rules", "From the map we made seven game rules. Three examples. Leading and deciding: we lead together, but decide on time; no consensus by the deadline, and the owner decides. Disagreeing: we disagree early, never personally, with a challenge round before big decisions. Scheduling: flexible, but every deadline has a 72-hour buffer."],
+        ["15", "Game rules", "From the Culture Map we made seven game rules, one for each dimension. How to read a card: on top is the dimension, and the red number is where our group sits on the 0–100 scale. In the middle is the rule, and at the bottom is what we actually do. <span class='cue'>point at one card</span> Communicating: we sit in the middle, so we are explicit but leave room for context, and the note-taker sends a recap after every meeting. Evaluating: we lean indirect, so feedback is honest but private, within 24 hours. <span class='cue'>slow down for the next two</span> Leading and deciding: we are egalitarian and like consensus, which can make us slow. So we rotate the chair, and if there is no consensus by the deadline, the owner decides. Disagreeing is our biggest risk: at 78 to 85, most of us avoid confrontation. So we disagree early, never personally, with a challenge round before big decisions. Last three, quickly: trust through check-ins and task buddies, a 72-hour buffer before deadlines, and one insight plus one example for every idea."],
         ["16", "Your turn", "Now your turn. Situation one: a teammate misses a shared deadline. What would you do? <span class='cue'>let 1–2 people answer, press →</span> Our rule: private feedback within 24 hours, then a recovery plan. <span class='cue'>same for situations 2 and 3; about 1 minute in total</span>"]
       ],
       handoff: "Rules only work if we really follow them. <b>[G]</b> will show how we stay efficient.",
@@ -609,7 +609,7 @@
       script: [
         ["20", "AI helper", "We used two AI tools: Codex and Claude Code. They helped with research, with a tool to agree on our Culture Map, and with this presentation. Our favourite example is this tool: each of us placed a dot, then we agreed the ranges together. So AI didn’t decide our culture; it helped our team decide together."],
         ["21", "We decided", "But we stayed in control. The best prompts had clear limits, like “Do not invent data.” AI also made mistakes: it invented a claim with no source, so we deleted it. Every number in our brief is marked Verified or Reported. And twice we said no to AI: to a phone voting game, and to a business-plan story."],
-        ["22", "Recap", "So: five questions, five answers. <span class='cue'>one line each, about 20 seconds</span>"],
+        ["22", "Recap", "So, to bring it all together. Who are we? Eight students from four countries, with one goal. What makes us unique? A shared purpose and eight values we chose ourselves. Where do we differ? Mostly in how we disagree, decide and plan time. And for each of those gaps, we made one simple rule. Finally, we stay efficient by building trust step by step, with a clear 12-month plan. <span class='cue'>about 25 seconds</span>"],
         ["23", "Close", "Different cultures, one playbook. Thank you! We’re happy to take your questions. <span class='cue'>everyone steps forward</span>"]
       ],
       handoff: "<b>Q&amp;A:</b> repeat each question, then pass it to the person who owns that part.",
@@ -617,7 +617,7 @@
       qa: [
         ["Free or paid tools?", "Both were paid versions."],
         ["How did you check AI’s facts?", "We opened every source. If we couldn’t, we marked it Reported, or left it out. <span class='cue'>open the brief</span>"],
-        ["Which prompt worked best?", "Prompts with clear limits, like “Do not invent data”, and giving AI our own material first."]
+        ["Key prompts that worked?", "Three things. 1) Clear limits: “Don’t add new content, don’t make it look AI-made.” 2) Show, don’t describe: we gave it a photo of our Vision Tree. 3) Small, specific feedback: “these lines are wrong” got a precise fix. AI helped. We decided."]
       ] }
   ];
 
@@ -749,7 +749,8 @@
 
   function team() {
     $("members").innerHTML = members.map((m, i) => {
-      const r = Object.keys(people).find(k => people[k] === m);
+      const key = m.toLowerCase();
+      const r = Object.keys(people).find(k => people[k].toLowerCase() === key);
       const role = r ? roles.find(x => x.r === r) : null;
       const from = memberFrom[m];
       return `<div class="card member">
@@ -773,7 +774,7 @@
   }
   document.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
   let startLang = "en";
-  try { startLang = localStorage.getItem("hub-lang") || ({ zh: "zh", fr: "fr", ko: "ko" })[(navigator.language || "en").slice(0, 2)] || "en"; } catch (e) {}
+  try { const q = new URLSearchParams(location.search).get("lang"); if (["en", "zh", "fr", "ko"].includes(q)) startLang = q; else startLang = localStorage.getItem("hub-lang") || ({ zh: "zh", fr: "fr", ko: "ko" })[(navigator.language || "en").slice(0, 2)] || "en"; } catch (e) {}
   setLang(startLang);
 
   header(); timeChart(); donut(); team(); tabs(); panel(); board();
