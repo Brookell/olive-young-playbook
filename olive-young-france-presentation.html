@@ -961,7 +961,7 @@
   </div>
 </div>
 
-<div class="hint">← → navigate · O all slides · type a number + Enter to jump · F full screen</div>
+<div class="hint">Click or ← → navigate · O all slides · type a number + Enter to jump · F full screen</div>
 <div class="jumpbox" id="jumpbox"></div>
 <div class="overview" id="overview" aria-hidden="true">
   <div class="ov-panel">
@@ -1125,6 +1125,17 @@
   document.getElementById("prev").onclick = prev;
   document.querySelectorAll(".flip").forEach(f => f.addEventListener("click", () => f.classList.toggle("on")));
   document.getElementById("cm").addEventListener("click", () => document.getElementById("cm").classList.toggle("ranges"));
+
+  // Click anywhere on a slide to advance (Shift+click goes back).
+  // Links, buttons, flip cards, the Culture Map and selected text keep their own behavior.
+  stage.addEventListener("click", e => {
+    if (e.target.closest("a, button, input, textarea, select, .flip, #cm, .chnav")) return;
+    if (e.shiftKey) { try { window.getSelection().removeAllRanges(); } catch (err) {} prev(); return; }
+    if (String(window.getSelection && window.getSelection()).trim()) return;
+    next();
+  });
+  stage.addEventListener("mousedown", e => { if (e.shiftKey) e.preventDefault(); });
+  stage.style.cursor = "pointer";
 
   function fit() {
     const sc = Math.min(innerWidth / 1600, innerHeight / 900) * (document.fullscreenElement ? 1 : .96);
