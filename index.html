@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Olive Young Team Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* Layout: dark fixed sidebar + light working area of rounded white cards: stat tiles, charts, role table, scripts, to-do, materials. */
+  :root {
+    --bg: #F0F2EE; --card: #FFFFFF; --sunk: #F3F4F1; --ink: #14161A; --ink-2: #454B47; --muted: #7D847F; --line: #E6E9E3;
+    --side: #16181D; --side-ink: #ECEFE9; --side-muted: #8E948F;
+    --lime: #D4F25A; --lime-ink: #14161A; --lime-soft: #F0FAD0; --teal: #4FB9A3; --teal-soft: #DFF3EE;
+    --warn: #C9781C; --warn-soft: #FCF0E0; --ok: #2E9C6A;
+    --sans: "Plus Jakarta Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1013; --card: #1A1C21; --sunk: #22252B; --ink: #EEF1EC; --ink-2: #C4C9C5; --muted: #8B918D; --line: #2A2D33;
+      --side: #08090B; --lime-soft: rgba(212,242,90,.12); --teal-soft: rgba(79,185,163,.15); --warn-soft: rgba(201,120,28,.16); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1013; --card: #1A1C21; --sunk: #22252B; --ink: #EEF1EC; --ink-2: #C4C9C5; --muted: #8B918D; --line: #2A2D33;
+    --side: #08090B; --lime-soft: rgba(212,242,90,.12); --teal-soft: rgba(79,185,163,.15); --warn-soft: rgba(201,120,28,.16); color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--side); }
+  h1, h2, h3, p { margin: 0; }
+  h2 { font-size: 17px; font-weight: 700; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 8px; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+
+  .app { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100vh; }
+
+  /* sidebar */
+  .side { position: sticky; top: 0; height: 100vh; background: var(--side); color: var(--side-ink); display: flex; flex-direction: column; padding: 28px 18px 22px; padding-left: max(18px, env(safe-area-inset-left, 0px)); }
+  .brand { font-weight: 800; font-size: 21px; letter-spacing: -.01em; padding: 0 8px; }
+  .brand i { display: inline-block; width: 13px; height: 13px; border-radius: 50%; background: var(--lime); margin: 0 1px; vertical-align: 1px; }
+  .brand small { display: block; font-size: 12px; font-weight: 500; color: var(--side-muted); margin-top: 4px; }
+  .side .group { margin-top: 30px; font-size: 12px; color: var(--side-muted); padding: 0 10px; }
+  .side nav { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .side nav a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; text-decoration: none; font-weight: 500; color: var(--side-ink); }
+  .side nav a:hover { background: rgba(255,255,255,.06); }
+  .side nav a.on { background: var(--lime); color: var(--lime-ink); font-weight: 700; }
+  .side nav svg { width: 19px; height: 19px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .promo { margin-top: auto; background: var(--lime); color: var(--lime-ink); border-radius: 18px; padding: 18px; }
+  .promo .big { font-size: 34px; font-weight: 800; line-height: 1; }
+  .promo p { font-size: 13.5px; margin-top: 6px; }
+  .promo a { display: block; margin-top: 14px; text-align: center; padding: 10px; border-radius: 10px; background: var(--side); color: var(--side-ink); text-decoration: none; font-weight: 600; font-size: 14px; }
+
+  /* main */
+  main { min-width: 0; padding-block: 24px 60px; padding-left: 28px; padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--card); border-radius: 20px; padding: 16px 22px; }
+  .topbar h1 { font-size: 24px; font-weight: 700; color: var(--muted); }
+  .topbar h1 b { color: var(--ink); }
+  .topbar .sub { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+  .team { display: flex; align-items: center; gap: 12px; }
+  .avatars { display: flex; }
+  .av { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #14161A; border: 2px solid var(--card); margin-left: -8px; }
+  .av:first-child { margin-left: 0; }
+  .datechip { padding: 9px 14px; border-radius: 12px; background: var(--sunk); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+
+  .card { background: var(--card); border-radius: 20px; padding: 20px 22px; min-width: 0; }
+  .card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .pill { padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+  section { scroll-margin-top: 16px; }
+  .grid { display: grid; gap: 16px; margin-top: 16px; }
+  .g-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .g-21 { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+
+  /* stat tiles */
+  .stat { display: flex; flex-direction: column; gap: 6px; }
+  .stat .top { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--muted); }
+  .stat .val { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .stat .val small { font-size: 14px; font-weight: 600; color: var(--muted); margin-left: 4px; }
+  .stat .foot { font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px; }
+  .tag.lime { background: var(--lime); color: var(--lime-ink); }
+  .tag.teal { background: var(--teal-soft); color: var(--teal); }
+  .tag.warn { background: var(--warn-soft); color: var(--warn); }
+  .stat.dark { background: var(--side); color: var(--side-ink); }
+  .stat.dark .top, .stat.dark .val small { color: var(--side-muted); }
+  .ico { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--sunk); }
+  .stat.dark .ico { background: var(--lime); color: var(--lime-ink); }
+  .ico svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* charts */
+  svg.chart { width: 100%; height: auto; display: block; }
+  svg.chart text { font-family: var(--sans); font-size: 12px; fill: var(--muted); }
+  svg.chart .v { fill: var(--ink); font-weight: 700; font-size: 12.5px; }
+  svg.chart .grid-l { stroke: var(--line); stroke-dasharray: 3 5; }
+  svg.chart .bar { fill: var(--lime); cursor: pointer; transition: opacity .2s; }
+  svg.chart .bar.tl { fill: var(--teal); }
+  svg.chart .bar.on { fill: var(--side); }
+  :root[data-theme="dark"] svg.chart .bar.on { fill: #EEF1EC; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) svg.chart .bar.on { fill: #EEF1EC; } }
+  svg.chart .bar:hover { opacity: .8; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--ink-2); margin-top: 10px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .donut-wrap { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .donut-wrap svg { width: 150px; height: 150px; flex: none; }
+  .donut-wrap .legend { flex-direction: column; margin: 0; }
+  .donut-wrap .legend b { font-family: var(--mono); margin-left: 6px; }
+
+  /* table */
+  .tbl { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  th { text-align: left; font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 11px 10px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  tr.row { cursor: pointer; }
+  tr.row:hover td { background: var(--sunk); }
+  .ltr { width: 26px; height: 26px; border-radius: 8px; display: inline-grid; place-items: center; font-weight: 800; font-size: 13px; background: var(--lime); color: var(--lime-ink); }
+  .share { display: flex; align-items: center; gap: 10px; }
+  .track { flex: 1; height: 7px; border-radius: 4px; background: var(--teal-soft); overflow: hidden; min-width: 80px; }
+  .track i { display: block; height: 100%; border-radius: 4px; background: var(--teal); }
+  .badge { padding: 3px 9px; border-radius: 999px; background: var(--side); color: var(--side-ink); font-size: 12px; font-weight: 700; font-family: var(--mono); }
+  .who-set { font-weight: 600; }
+  .who-tbd { color: var(--warn); font-weight: 600; font-size: 13px; }
+
+  /* due list */
+  .due { display: flex; flex-direction: column; gap: 10px; }
+  .due div { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .due i { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); margin-top: 7px; }
+  .due p { font-size: 14px; font-weight: 600; }
+  .due small { display: block; font-size: 12.5px; color: var(--muted); }
+
+  /* roles + scripts */
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .tab { display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 7px; border-radius: 12px; border: 0; background: var(--sunk); cursor: pointer; white-space: nowrap; font-size: 14px; font-weight: 600; }
+  .tab .ltr { background: var(--card); color: var(--ink); }
+  .tab.on { background: var(--side); color: var(--side-ink); }
+  .tab.on .ltr { background: var(--lime); color: var(--lime-ink); }
+  .panel { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  .role-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .role-h h3 { font-size: 21px; font-weight: 800; }
+  .role-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .owns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .owns span { padding: 6px 10px; border-radius: 10px; background: var(--teal-soft); color: var(--ink-2); font-size: 13px; }
+  .script { margin-top: 16px; }
+  .line { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .sn { display: flex; flex-direction: column; gap: 4px; }
+  .sn .badge { align-self: flex-start; }
+  .sn small { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .say { font-size: 15.5px; line-height: 1.6; }
+  .cue { font-size: 13px; font-style: italic; color: var(--teal); background: var(--teal-soft); padding: 1px 6px; border-radius: 5px; }
+  .fill { background: var(--warn-soft); color: var(--warn); font-weight: 700; padding: 0 5px; border-radius: 5px; }
+  .handoff { margin-top: 4px; padding: 12px 14px; border-radius: 12px; background: var(--lime-soft); font-size: 14.5px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 9px 14px; border-radius: 10px; border: 0; background: var(--side); color: var(--side-ink); cursor: pointer; font-weight: 600; font-size: 13.5px; }
+  .side-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .side-col ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: var(--ink-2); }
+  .qa { display: flex; flex-direction: column; gap: 12px; }
+  .qa div { font-size: 14px; color: var(--ink-2); }
+  .qa b { display: block; color: var(--ink); margin-bottom: 2px; }
+
+  /* tasks */
+  .board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .col-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .col-h h3 { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .col-h h3 i { width: 10px; height: 10px; border-radius: 3px; }
+  .task { padding: 12px 14px; border-radius: 14px; background: var(--sunk); margin-bottom: 8px; }
+  .task p { font-size: 14px; font-weight: 600; }
+  .task.done p { color: var(--muted); text-decoration: line-through; }
+  .task small { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+
+  /* materials */
+  .mats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .mat { display: flex; flex-direction: column; gap: 8px; }
+  .mat .kind { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+  .mat h3 { font-size: 17px; font-weight: 700; }
+  .mat p { font-size: 14px; color: var(--ink-2); }
+  .mat a { margin-top: auto; align-self: flex-start; padding: 8px 14px; border-radius: 10px; background: var(--lime); color: var(--lime-ink); font-weight: 700; font-size: 13.5px; text-decoration: none; }
+  ol.req, ul.req { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); }
+  .keys { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--ink-2); }
+  kbd { font-family: var(--mono); font-size: 12px; padding: 2px 7px; border-radius: 6px; background: var(--sunk); border: 1px solid var(--line); }
+  .note { margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .sec-title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 34px 0 0; }
+  .sec-title h2 { font-size: 20px; font-weight: 800; }
+  .sec-title p { font-size: 13.5px; color: var(--muted); }
+
+  @media (max-width: 1100px) {
+    .g-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g-21, .panel { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .side { position: sticky; top: env(safe-area-inset-top, 0px); height: auto; z-index: 20; flex-direction: row; align-items: center; gap: 12px; padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
+    .brand small, .side .group, .promo { display: none; }
+    .brand { font-size: 17px; padding: 0; white-space: nowrap; }
+    .side nav { flex-direction: row; margin: 0; }
+    .side nav a { padding: 7px 10px; white-space: nowrap; font-size: 13.5px; }
+    .side nav svg { display: none; }
+    main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .board, .mats { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) { .g-stats { grid-template-columns: 1fr; } .topbar h1 { font-size: 20px; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">Playb<i></i>ok Hub<small>Olive Young × France</small></div>
+    <div class="group">Overview</div>
+    <nav id="nav">
+      <a href="#dashboard" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a>
+      <a href="#roles"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h10M4 20h7"/></svg>Scripts</a>
+      <a href="#tasks"><svg viewBox="0 0 24 24"><path d="M4 6l2 2 4-4M4 14l2 2 4-4"/><path d="M13 6h7M13 14h7M4 20h16"/></svg>To-do</a>
+      <a href="#materials"><svg viewBox="0 0 24 24"><path d="M4 4h6l2 3h8v13H4z"/></svg>Materials</a>
+    </nav>
+    <div class="promo">
+      <div class="big" id="promoDays">–</div>
+      <p id="promoText">days to our presentation, Thu 12 Nov</p>
+      <a href="olive-young-france-presentation.html" target="_blank" rel="noopener">Open the deck ↗</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Welcome back, <b>team!</b></h1>
+        <p class="sub">Intercultural Management · final presentation · updated by Brooke</p>
+      </div>
+      <div class="team">
+        <div class="avatars" id="avatars"></div>
+        <span class="datechip">Thu 12 Nov · Sessions #7–#8</span>
+      </div>
+    </div>
+
+    <section id="dashboard">
+      <div class="grid g-stats">
+        <div class="card stat dark"><div class="top">Countdown<span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span></div><div class="val" id="statDays">–<small>days</small></div><div class="foot"><span class="tag lime">Thu 12 Nov</span> presentation day</div></div>
+        <div class="card stat"><div class="top">Tasks done<span class="ico"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div><div class="val" id="statTasks">–</div><div class="foot" id="statTasksFoot"></div></div>
+        <div class="card stat"><div class="top">Roles assigned<span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M17 11l2 2 3-4"/></svg></span></div><div class="val" id="statRoles">–</div><div class="foot" id="statRolesFoot"></div></div>
+        <div class="card stat"><div class="top">Presentation<span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></span></div><div class="val">23<small>slides</small></div><div class="foot"><span class="tag teal">15:00</span> 5 chapters · 7 speakers</div></div>
+      </div>
+
+      <div class="grid g-21">
+        <div class="card">
+          <div class="card-h"><h2>Speaking time by role</h2><span class="pill">Minutes · total 15:00</span></div>
+          <svg class="chart" id="timeChart" viewBox="0 0 640 230" role="img" aria-label="Speaking time per role"></svg>
+          <div class="legend"><span><i style="background:var(--lime)"></i>Speaking time</span><span><i style="background:var(--side)"></i>Selected role</span><span class="muted">Click a bar to open its script</span></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Task status</h2><span class="pill">As of Tue 10 Nov</span></div>
+          <div class="donut-wrap"><svg id="donut" viewBox="0 0 120 120" role="img" aria-label="Task status"></svg><div class="legend" id="donutLegend"></div></div>
+        </div>
+      </div>
+
+      <div class="grid g-21">
+        <div class="card">
+          <div class="card-h"><h2>Run of show</h2><span class="pill">In order</span></div>
+          <div class="tbl"><table><thead><tr><th>Role</th><th>Person</th><th>Slides</th><th>Share of time</th><th>Time</th></tr></thead><tbody id="rosBody"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Due first</h2><span class="pill">Wed 11 Nov</span></div>
+          <div class="due" id="dueList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles">
+      <div class="sec-title"><h2>Roles &amp; scripts</h2><p>Say it in your own words. Never read the slides.</p></div>
+      <div class="card" style="margin-top:14px;padding:12px">
+        <div class="tabs" id="tabs" role="tablist"></div>
+      </div>
+      <div class="panel" id="panel"></div>
+    </section>
+
+    <section id="tasks">
+      <div class="sec-title"><h2>To-do</h2><p>Tell Brooke in the group chat when you finish something.</p></div>
+      <div class="board" style="margin-top:14px" id="board"></div>
+    </section>
+
+    <section id="materials">
+      <div class="sec-title"><h2>Materials</h2><p>Open in Chrome on a laptop.</p></div>
+      <div class="mats" style="margin-top:14px">
+        <div class="card mat"><span class="kind">Main file</span><h3>Presentation</h3><p>The 23-slide web deck we present from. Role letters will be replaced by names.</p><a href="olive-young-france-presentation.html" target="_blank" rel="noopener">Open the deck ↗</a></div>
+        <div class="card mat"><span class="kind">Background</span><h3>Market research brief</h3><p>French market, Gen Z data, competitors, Olive Young figures, EU rules. Every fact marked Verified or Reported.</p><a href="olive-young-france-research.html" target="_blank" rel="noopener">Open the brief ↗</a></div>
+        <div class="card mat"><span class="kind">Tool</span><h3>Culture Map Group Marker</h3><p>Our seven dots and the agreed group ranges. Linked from slides 13 and 20.</p><a href="culture-map-group-marker.html" target="_blank" rel="noopener">Open the tool ↗</a></div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <div class="card"><div class="card-h"><h2>What the professor asks</h2></div>
+          <ol class="req"><li>Who are you, and who is your team?</li><li>What makes it unique, with its own identity?</li><li>What are the cultural differences in your team?</li><li>How do you make these differences opportunities?</li><li>How do you make your multicultural team efficient?</li></ol>
+          <p class="note">Must include: Golden Circle, Vision Tree, Blazon, Culture Map, and a first 12-month action plan with concrete examples.</p></div>
+        <div class="card"><div class="card-h"><h2>His feedback on other groups</h2></div>
+          <ul class="req"><li>Everyone speaks and engages the audience</li><li>Be creative; don’t read from phones or slides</li><li>One consistent slide design</li><li>A detailed, specific action plan</li><li>Explain the target market and the unique product</li><li>Say exactly which AI tools we used, for what, and how</li></ul></div>
+        <div class="card"><div class="card-h"><h2>Presenting the web deck</h2></div>
+          <div class="keys"><span><kbd>→</kbd> next</span><span><kbd>←</kbd> back</span><span><kbd>O</kbd> all slides</span><span><kbd>2</kbd><kbd>0</kbd><kbd>Enter</kbd> slide 20</span><span><kbd>F</kbd> full screen</span></div>
+          <p class="note">Slides 2, 13 and 16 reveal in steps: press → once more before moving on.</p></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const PRESENTATION = new Date(2026, 10, 12);
+  const members = ["Brooke", "yui", "yewon", "Swann", "eungyo", "taeyeon", "xin"];
+  const memberColors = ["#2E6B4F", "#D9822B", "#4C7BD9", "#8E5BB5", "#D14D72", "#2A9D8F", "#8C6A4F"];
+
+  // Assigned people: fill in once roles are chosen. Empty string = not assigned yet.
+  const people = { A: "", B: "", C: "", D: "", E: "", F: "", G: "Brooke" };
+
+  const roles = [
+    { r: "A", t: "Opener", slides: "1–4", min: 2,
+      owns: ["Opening and the five questions", "Note-taker after meetings"],
+      script: [
+        ["1", "Cover", "Good morning everyone. We are Brooke, yui, yewon, Swann, eungyo, taeyeon and xin. Today we show you how our multicultural team works while preparing Olive Young’s entry into France."],
+        ["2", "Hook", "Before we start, a quick question. Raise your hand if you own at least one Korean skincare product. <span class='cue'>wait, react</span> <span class='cue'>press →</span> Now keep your hand up if you knew exactly which one to buy first. <span class='cue'>react</span> That confusion is where our project starts."],
+        ["3", "Mission", "We are an international team with one mission: bring Olive Young to France. But a good plan needs a team that works. So today we answer five questions: who we are, what makes us unique, our cultural differences, how we turn them into opportunities, and how we stay efficient."],
+        ["4", "Golden Circle", "First, the company. Olive Young’s why: everyone can discover their unique beauty and a healthy lifestyle. How: a seamless shopping experience, from trendy products to daily self-care. What: a global platform for Korean beauty and new Korean brands."]
+      ],
+      handoff: "So what exactly would Olive Young bring to France? <b>[B]</b>, over to you.",
+      prep: ["Practise the hand-raise question and your reaction lines", "Know the Golden Circle without looking"],
+      qa: [["Why did you choose Olive Young?", "<span class='fill'>Our team’s real reason</span>"]] },
+    { r: "B", t: "Market & Product", slides: "5–6", min: 1.5,
+      owns: ["Target market, product, customer journey", "Months 1–3 lead: customer research"],
+      script: [
+        ["5", "Proposal", "Our proposal is the K-Beauty Discovery Lab in Paris. The idea: don’t sell a catalogue, guide a routine. Our target is Gen Z skincare explorers in Paris. Demand is growing fast: Korean cosmetics exports to France grew 71.5% in 2025. And young French women already use about eight skincare products, so they don’t need a first routine; they want a better one."],
+        ["6", "Kit + journey", "This is our product, the Routine Découverte kit: a cleanser and a sun cream from BRINGGREEN, and a repair cream from BIOHEAL BOH. All three are Olive Young’s own brands, so you can only get them from Olive Young. The journey: find your routine online in French, get a skin consultation at our Paris pop-up, swap three steps of your routine, with a gift, and come back with refill reminders."]
+      ],
+      handoff: "A good product needs a good team. <b>[C]</b> will introduce who we are.",
+      prep: ["Confirm the price of the BIOHEAL BOH cream (Olive Young app)", "Read sections 01–03 of the research brief"],
+      qa: [
+        ["Isn’t K-beauty already in Paris?", "Yes: Sephora, Galeries Lafayette, Monoprix, and Moida on the Champs-Élysées, which even offers skin diagnosis. None of them has Olive Young’s own brands or our French routine finder with refills."],
+        ["Why not just sell through Sephora?", "Sephora’s deal with Olive Young covers the US, Asia and the UK in 2027, not France. And our own lab builds Olive Young’s brand, not Sephora’s."],
+        ["How much is the kit?", "In Korea the cleanser is ₩13,000 and the sun cream ₩20,000. We would set the French price after testing in months 1–3."]
+      ] },
+    { r: "C", t: "People & Culture", slides: "7–11", min: 2.5,
+      owns: ["Team intro, Vision Tree, Blazon", "Trust: check-ins, task buddies"],
+      script: [
+        ["7", "Chapter 01", "Our first question: who are we?"],
+        ["8", "Meet the team", "We are seven people from <span class='fill'>[N]</span> cultural backgrounds, and each of us has a role. Let’s introduce ourselves, one sentence each. <span class='cue'>each member, A to G: “I’m [name], from [background]. I’m our [role], so I [one responsibility].”</span>"],
+        ["9", "Chapter 02", "Second question: what makes our team unique?"],
+        ["10", "Vision Tree", "This is our Vision Tree. The roots are our purpose: use our cultural diversity and market knowledge to help Olive Young grow in Europe. The branches are our ambitions: a comfortable, efficient team, learning together, and turning differences into creative ideas. Eight values feed the tree. For example, <span class='fill'>[value]</span> means that in our meetings we <span class='fill'>[real behaviour]</span>."],
+        ["11", "Blazon", "And this is our team blazon. Our achievements: <span class='fill'>[3]</span>. What we like most: <span class='fill'>[…]</span>. Our hidden qualities: <span class='fill'>[3]</span>. What we find difficult right now: <span class='fill'>[…]</span>. And our motto: <span class='fill'>[…]</span>."]
+      ],
+      handoff: "Being unique also means being different. <b>[D]</b> will show you how different we really are.",
+      prep: ["Collect everyone’s background and one “what I bring” line", "Collect the Blazon content from the group", "Pick one value with a real example"],
+      qa: [["Which value is hardest for your team?", "<span class='fill'>Team answer</span>"]] },
+    { r: "D", t: "Culture Map", slides: "12–13", min: 2,
+      owns: ["Our cultural differences", "Months 10–12 lead: rules review"],
+      script: [
+        ["12", "Chapter 03", "Third question: what are our cultural differences?"],
+        ["13", "Culture Map", "This is our Culture Map, with Erin Meyer’s eight dimensions. Each coloured dot is one of us. <span class='cue'>press → to show the ranges</span> The pink areas are the ranges we agreed on together. Look at Disagreeing: from 18 to 100. Some of us say no very directly; most of us avoid open confrontation. Deciding goes from 2 to 66, and Scheduling from 25 to 87. For example, <span class='fill'>[a real moment from our project]</span>."]
+      ],
+      handoff: "Differences are only a problem without rules. <b>[E]</b> will show our game rules.",
+      prep: ["One real example of a difference you noticed", "Practise the reveal: press → on slide 13", "Optional: open the live tool from the slide"],
+      qa: [
+        ["How did you decide the group ranges?", "Each of us placed our own dot in our Culture Map tool. Then we discussed and dragged the ranges together until everyone agreed, and locked them."],
+        ["Who is the most direct person?", "Only name someone if they agreed beforehand. Otherwise: “That’s a team secret, but the dots don’t lie.”"]
+      ] },
+    { r: "E", t: "Facilitator", slides: "14–16", min: 2.5,
+      owns: ["Game rules and audience scenarios", "Runs challenge rounds"],
+      script: [
+        ["14", "Chapter 04", "Fourth question: how do we turn differences into opportunities?"],
+        ["15", "Game rules", "From the map we made seven game rules. Three examples. Leading and deciding: we lead together, but decide on time; no consensus by the deadline, and the owner decides. Disagreeing: we disagree early, never personally, with a challenge round before big decisions. Scheduling: flexible, but every deadline has a 72-hour buffer."],
+        ["16", "Your turn", "Now your turn. Situation one: a teammate misses a shared deadline. What would you do? <span class='cue'>let 1–2 people answer, press →</span> Our rule: private feedback within 24 hours, then a recovery plan. <span class='cue'>same for situations 2 and 3; about 1 minute in total</span>"]
+      ],
+      handoff: "Rules only work if we really follow them. <b>[F]</b> will show how we stay efficient.",
+      prep: ["Collect 2–3 real team moments to replace the situations", "Time slide 16: keep it near 1 minute"],
+      qa: [["Have you already used these rules?", "<span class='fill'>A real example from our project</span>"]] },
+    { r: "F", t: "Operations", slides: "17–19", min: 2.5,
+      owns: ["Trust Pyramid and 12-month plan", "Months 4–6 lead: Paris pop-up"],
+      script: [
+        ["17", "Chapter 05", "Last question: how do we make our team efficient?"],
+        ["18", "Trust Pyramid", "We used Lencioni’s Trust Pyramid, with one action per layer, from the bottom. Trust: biweekly check-ins and task buddies. Healthy conflict: a challenge round before key decisions. Commitment: a decision deadline and a final owner. Accountability: a weekly task board, one owner per task. Results: one team scorecard, reviewed every month. Each layer has an owner."],
+        ["19", "12-month plan", "Here are our first 12 months. Months 1–3: listen and build: a routine-finder prototype, 50 customer interviews and EU compliance. Months 4–6: our Paris pop-up, testing three kits. Months 7–9: improve with data. Months 10–12: decide on a second city. Every phase has a lead and a KPI."]
+      ],
+      handoff: "Finally: how did AI help us, and where did we say no? <b>[G]</b>.",
+      prep: ["Know the lead of each phase by name", "Read section 05 (EU rules) of the research brief"],
+      qa: [
+        ["What is the budget?", "We haven’t costed it yet. It would be part of months 1–3, after the customer interviews."],
+        ["Why Paris first?", "The K-beauty shops and competitors we researched are in Paris, so it is the best place to test and learn. We decide on a second city in months 10–12."]
+      ] },
+    { r: "G", t: "AI & Quality", slides: "20–23", min: 2,
+      owns: ["AI use, recap and closing", "Months 7–9 lead: data, scorecard"],
+      script: [
+        ["20", "AI helper", "We used two AI tools: Codex and Claude Code. They helped with research, with a tool to agree on our Culture Map, and with this presentation. Our favourite example is this tool: each of us placed a dot, then we agreed the ranges together. So AI didn’t decide our culture; it helped seven people decide together."],
+        ["21", "We decided", "But we stayed in control. The best prompts had clear limits, like “Do not invent data.” AI also made mistakes: it invented a claim with no source, so we deleted it. Every number in our brief is marked Verified or Reported. And twice we said no to AI: to a phone voting game, and to a business-plan story."],
+        ["22", "Recap", "So: five questions, five answers. <span class='cue'>one line each, about 20 seconds</span>"],
+        ["23", "Close", "Different cultures, one playbook. Thank you! We’re happy to take your questions. <span class='cue'>everyone steps forward</span>"]
+      ],
+      handoff: "<b>Q&amp;A:</b> repeat each question, then pass it to the person who owns that part.",
+      prep: ["Read the whole research brief once", "Practise opening the brief and the tool from slide 20"],
+      qa: [
+        ["Free or paid tools?", "Both were paid versions."],
+        ["How did you check AI’s facts?", "We opened every source. If we couldn’t, we marked it Reported, or left it out. <span class='cue'>open the brief</span>"],
+        ["Which prompt worked best?", "Prompts with clear limits, like “Do not invent data”, and giving AI our own material first."]
+      ] }
+  ];
+
+  const tasks = [
+    { s: "done", t: "Deck structure and design (23 slides)", o: "Brooke" },
+    { s: "done", t: "Market research brief with sources", o: "Brooke" },
+    { s: "done", t: "AI slides and Culture Map tool links", o: "Brooke" },
+    { s: "done", t: "Speaker scripts in this hub", o: "Brooke" },
+    { s: "urgent", t: "Pick a role: 1st and 2nd choice", o: "Everyone", d: "Wed 11, 12:00" },
+    { s: "urgent", t: "Send your background + “what I bring” line", o: "Everyone", d: "Wed 11, evening" },
+    { s: "urgent", t: "Blazon content: achievements, qualities, difficulty, motto", o: "C + everyone", d: "Wed 11, evening" },
+    { s: "urgent", t: "2–3 real team moments for the scenarios", o: "E + everyone", d: "Wed 11, evening" },
+    { s: "todo", t: "Confirm the BIOHEAL BOH cream price", o: "B", d: "Wed 11" },
+    { s: "todo", t: "Put names into the deck and this hub", o: "Brooke", d: "Wed 11, night" },
+    { s: "todo", t: "Rehearse your part without reading", o: "Everyone", d: "Wed 11, night" },
+    { s: "todo", t: "Full run-through with a timer", o: "Everyone", d: "Thu 12, before class" },
+    { s: "todo", t: "Test the deck on the presenting laptop", o: "Brooke", d: "Thu 12" }
+  ];
+
+  const $ = id => document.getElementById(id);
+  const fmt = m => { const s = Math.round(m * 60); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+  let current = "A";
+  try { const v = localStorage.getItem("hub-role"); if (v && roles.some(x => x.r === v)) current = v; } catch (e) {}
+
+  function header() {
+    $("avatars").innerHTML = members.map((m, i) => `<span class="av" title="${m}" style="background:${memberColors[i]};color:#fff">${m[0].toUpperCase()}</span>`).join("");
+    const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const d = Math.round((PRESENTATION - today) / 86400000);
+    const big = d > 0 ? d : d === 0 ? "Today" : "Done";
+    $("statDays").innerHTML = d > 0 ? `${d}<small>${d === 1 ? "day" : "days"}</small>` : big;
+    $("promoDays").textContent = d > 0 ? `${d} ${d === 1 ? "day" : "days"}` : big;
+    $("promoText").textContent = d > 0 ? "to our presentation, Thu 12 Nov" : d === 0 ? "Presentation day. Good luck!" : "Presented on Thu 12 Nov";
+    const done = tasks.filter(t => t.s === "done").length;
+    $("statTasks").innerHTML = `${done}<small>/ ${tasks.length}</small>`;
+    $("statTasksFoot").innerHTML = `<span class="tag warn">${tasks.filter(t => t.s === "urgent").length} due first</span> by Wed 11 Nov`;
+    const assigned = Object.values(people).filter(Boolean).length;
+    $("statRoles").innerHTML = `${assigned}<small>/ 7</small>`;
+    $("statRolesFoot").innerHTML = `<span class="tag ${assigned === 7 ? "teal" : "warn"}">${7 - assigned} open</span> choose by Wed 12:00`;
+  }
+
+  function timeChart() {
+    const W = 640, H = 230, L = 40, B = 190, T = 20, max = 3, bw = 52, gap = (W - L - 10 - roles.length * bw) / (roles.length - 1);
+    const y = v => B - (v / max) * (B - T);
+    let s = "";
+    [0, 1, 2, 3].forEach(v => { s += `<line class="grid-l" x1="${L}" x2="${W - 6}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 10}" y="${y(v) + 4}" text-anchor="end">${v}:00</text>`; });
+    roles.forEach((x, i) => {
+      const bx = L + 10 + i * (bw + gap);
+      s += `<rect class="bar${x.r === current ? " on" : ""}" data-r="${x.r}" x="${bx}" y="${y(x.min)}" width="${bw}" height="${B - y(x.min)}" rx="10"><title>${x.r} · ${x.t}: ${fmt(x.min)}</title></rect>`;
+      s += `<text class="v" x="${bx + bw / 2}" y="${y(x.min) - 8}" text-anchor="middle">${fmt(x.min)}</text>`;
+      s += `<text x="${bx + bw / 2}" y="${B + 18}" text-anchor="middle" style="font-weight:700;fill:var(--ink)">${x.r}</text>`;
+      s += `<text x="${bx + bw / 2}" y="${B + 33}" text-anchor="middle">${people[x.r] || x.t.split(" ")[0]}</text>`;
+    });
+    $("timeChart").innerHTML = s;
+  }
+
+  function donut() {
+    const groups = [["done", "Done", "var(--teal)"], ["urgent", "Due first", "var(--warn)"], ["todo", "Next", "var(--lime)"]];
+    const total = tasks.length, r = 46, c = 2 * Math.PI * r;
+    let off = 0, s = `<circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--sunk)" stroke-width="16"/>`;
+    groups.forEach(([k, , col]) => {
+      const n = tasks.filter(t => t.s === k).length, len = c * n / total;
+      if (n) s += `<circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="16" stroke-dasharray="${len - 2} ${c - len + 2}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;
+      off += len;
+    });
+    const done = tasks.filter(t => t.s === "done").length;
+    s += `<text x="60" y="58" text-anchor="middle" style="font-family:var(--sans);font-size:22px;font-weight:800;fill:var(--ink)">${Math.round(done / total * 100)}%</text><text x="60" y="75" text-anchor="middle" style="font-family:var(--sans);font-size:10px;fill:var(--muted)">complete</text>`;
+    $("donut").innerHTML = s;
+    $("donutLegend").innerHTML = groups.map(([k, name, col]) => `<span><i style="background:${col}"></i>${name}<b>${tasks.filter(t => t.s === k).length}</b></span>`).join("");
+  }
+
+  function ros() {
+    $("rosBody").innerHTML = roles.map(x => `<tr class="row" data-r="${x.r}"><td><span class="ltr">${x.r}</span>&nbsp; ${x.t}</td><td>${people[x.r] ? `<span class="who-set">${people[x.r]}</span>` : `<span class="who-tbd">Not assigned</span>`}</td><td class="mono">${x.slides}</td><td><div class="share"><div class="track"><i style="width:${Math.round(x.min / 2.5 * 100)}%"></i></div><span class="mono muted">${Math.round(x.min / 15 * 100)}%</span></div></td><td><span class="badge">${fmt(x.min)}</span></td></tr>`).join("");
+    $("dueList").innerHTML = tasks.filter(t => t.s === "urgent").map(t => `<div><i></i><span><p>${t.t}</p><small>${t.o} · ${t.d}</small></span></div>`).join("");
+  }
+
+  function tabs() {
+    $("tabs").innerHTML = roles.map(x => `<button class="tab${x.r === current ? " on" : ""}" role="tab" aria-selected="${x.r === current}" data-r="${x.r}"><span class="ltr">${x.r}</span>${people[x.r] || x.t}</button>`).join("");
+  }
+
+  function panel() {
+    const x = roles.find(v => v.r === current);
+    $("panel").innerHTML = `
+      <div class="card">
+        <div class="role-h"><span class="ltr" style="width:34px;height:34px;font-size:16px">${x.r}</span><h3>${x.t}</h3>${people[x.r] ? `<span class="tag teal">${people[x.r]}</span>` : `<span class="tag warn">Not assigned yet</span>`}</div>
+        <div class="role-meta"><span class="pill">Slides <b class="mono">${x.slides}</b></span><span class="pill">Time <b class="mono">${fmt(x.min)}</b></span></div>
+        <div class="owns">${x.owns.map(o => `<span>${o}</span>`).join("")}</div>
+        <div class="script">${x.script.map(l => `<div class="line"><div class="sn"><span class="badge">s.${l[0]}</span><small>${l[1]}</small></div><div class="say">${l[2]}</div></div>`).join("")}
+          <div class="handoff">${x.handoff}</div></div>
+        <button class="btn" id="copyBtn">Copy my script</button>
+      </div>
+      <div class="side-col">
+        <div class="card"><div class="card-h"><h2>Prepare before Thursday</h2></div><ul>${x.prep.map(p => `<li>${p}</li>`).join("")}</ul></div>
+        <div class="card"><div class="card-h"><h2>If you’re asked</h2></div><div class="qa">${x.qa.map(q => `<div><b>${q[0]}</b>${q[1]}</div>`).join("")}</div></div>
+      </div>`;
+    $("copyBtn").addEventListener("click", () => {
+      const tmp = document.createElement("div");
+      const plain = h => { tmp.innerHTML = h; return tmp.textContent; };
+      const text = x.script.map(l => `Slide ${l[0]} (${l[1]}): ${plain(l[2])}`).join("\n\n") + "\n\n" + plain(x.handoff);
+      const btn = $("copyBtn");
+      Promise.resolve().then(() => navigator.clipboard.writeText(text)).then(() => { btn.textContent = "Copied"; }, () => {
+        const ta = document.createElement("textarea"); ta.value = text; ta.rows = 8; ta.style.width = "100%"; btn.replaceWith(ta); ta.select();
+      });
+    });
+  }
+
+  function board() {
+    const cols = [["urgent", "Due first", "var(--warn)"], ["todo", "Next", "var(--lime)"], ["done", "Done", "var(--teal)"]];
+    $("board").innerHTML = cols.map(([k, name, col]) => {
+      const list = tasks.filter(t => t.s === k);
+      return `<div class="card"><div class="col-h"><h3><i style="background:${col}"></i>${name}</h3><span class="badge">${list.length}</span></div>${list.map(t => `<div class="task ${k}"><p>${t.t}</p><small><span>${t.o}</span>${t.d ? `<span class="mono">${t.d}</span>` : ""}</small></div>`).join("")}</div>`;
+    }).join("");
+  }
+
+  function select(r, jump) {
+    current = r;
+    try { localStorage.setItem("hub-role", r); } catch (e) {}
+    timeChart(); tabs(); panel();
+    if (jump) document.getElementById("roles").scrollIntoView({ behavior: "smooth" });
+  }
+
+  document.addEventListener("click", e => {
+    const el = e.target.closest("[data-r]");
+    if (el) select(el.dataset.r, !el.classList.contains("tab"));
+  });
+
+  const navLinks = [...document.querySelectorAll("#nav a")];
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
+  }), { rootMargin: "-30% 0px -65% 0px" });
+  navLinks.forEach(a => { const s = document.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
+
+  header(); timeChart(); donut(); ros(); tabs(); panel(); board();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Culture Map Group Marker</title>
+  <style>
+    :root {
+      --pink: #d71962;
+      --pink-dark: #b80f50;
+      --ink: #18202a;
+      --muted: #657080;
+      --paper: #f7f8fb;
+      --card: #ffffff;
+      --line: #dde2ea;
+      --shadow: 0 18px 44px rgba(24, 32, 42, 0.1);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 36px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.94rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 13px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(24, 32, 42, 0.06);
+    }
+
+    .button.primary {
+      border-color: var(--pink);
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .lock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(24, 32, 42, 0.1);
+      border-radius: var(--radius);
+      background: #f3f5f8;
+      color: var(--muted);
+      padding: 10px 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(24, 32, 42, 0.04);
+    }
+
+    .lock-badge.editing {
+      border-color: rgba(215, 25, 98, 0.3);
+      background: #fff1f6;
+      color: var(--pink-dark);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .overview {
+      margin-bottom: 18px;
+      padding: 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .overview-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .overview h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .overview-note {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .panel,
+    .map {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 16px;
+      position: sticky;
+      top: 12px;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .person-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .person {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(24, 32, 42, 0.18);
+    }
+
+    .person input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px 9px;
+      color: var(--ink);
+    }
+
+    .person input:disabled {
+      background: #f8f9fb;
+      color: var(--ink);
+      cursor: default;
+      opacity: 1;
+    }
+
+    .person.active .swatch {
+      box-shadow: 0 0 0 3px rgba(215, 25, 98, 0.18), 0 0 0 1px rgba(24, 32, 42, 0.18);
+    }
+
+    .person.active input {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(215, 25, 98, 0.12);
+    }
+
+    .hint {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .map {
+      overflow: hidden;
+    }
+
+    .dimension {
+      padding: 18px 18px 20px;
+      border-bottom: 1px solid #eef1f5;
+    }
+
+    .dimension:last-child {
+      border-bottom: 0;
+    }
+
+    .bar {
+      position: relative;
+      height: 34px;
+      border-radius: 0;
+      background: var(--pink);
+      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .bar-label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+      pointer-events: none;
+    }
+
+    .left-label {
+      left: 12px;
+      font-weight: 500;
+    }
+
+    .center-label {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .right-label {
+      right: 12px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(80px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .locked .slider-row {
+      display: none;
+    }
+
+    .choice {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .choice-name {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      min-width: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .choice-name .swatch {
+      width: 10px;
+      height: 10px;
+      border-width: 1px;
+      flex: 0 0 auto;
+    }
+
+    .choice-name span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--pink);
+      cursor: pointer;
+    }
+
+    .track {
+      position: relative;
+      height: 52px;
+      margin-top: 12px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(24, 32, 42, 0.12) 1px, transparent 1px) 0 0 / 10% 100%,
+        #fbfcfe;
+      border: 1px solid var(--line);
+    }
+
+    .midline {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: 1px dashed rgba(24, 32, 42, 0.28);
+    }
+
+    .dot {
+      position: absolute;
+      top: 50%;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 5px 12px rgba(24, 32, 42, 0.18);
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      z-index: 4;
+    }
+
+    .scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 7px;
+    }
+
+    .overview-grid {
+      display: grid;
+      gap: 13px;
+    }
+
+    .overview-row {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr) 170px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .overview-endpoint {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.25;
+    }
+
+    .overview-endpoint.right {
+      text-align: right;
+    }
+
+    .overview-track {
+      position: relative;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(24, 32, 42, 0.11) 1px, transparent 1px) 0 0 / 10% 100%,
+        linear-gradient(180deg, #ffffff 0%, #fafbfe 100%);
+      cursor: crosshair;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .locked .overview-track {
+      cursor: default;
+    }
+
+    .group-range {
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      border-radius: 999px;
+      background: rgba(215, 25, 98, 0.18);
+      border: 1px solid rgba(215, 25, 98, 0.42);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .range-handle {
+      position: absolute;
+      top: 50%;
+      width: 18px;
+      height: 34px;
+      border-radius: 999px;
+      border: 2px solid #fff;
+      background: var(--pink);
+      box-shadow: 0 5px 14px rgba(24, 32, 42, 0.2);
+      transform: translate(-50%, -50%);
+      cursor: ew-resize;
+      touch-action: none;
+      z-index: 3;
+    }
+
+    .range-handle::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 50%;
+      border-left: 1px solid rgba(255, 255, 255, 0.75);
+      transform: translateX(-50%);
+    }
+
+    .range-handle.dragging {
+      box-shadow: 0 0 0 7px rgba(215, 25, 98, 0.14), 0 8px 18px rgba(24, 32, 42, 0.24);
+    }
+
+    .range-label {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--pink-dark);
+      font-size: 0.68rem;
+      font-weight: 800;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .overview-title {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(24, 32, 42, 0.2);
+      font-size: 0.86rem;
+      font-weight: 900;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .average-line {
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      width: 2px;
+      border-radius: 999px;
+      background: rgba(24, 32, 42, 0.34);
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .average-line::after {
+      content: "avg";
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 700;
+    }
+
+    .overview-dot {
+      position: absolute;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 10px rgba(24, 32, 42, 0.2);
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      cursor: grab;
+      touch-action: none;
+      z-index: 4;
+    }
+
+    .locked .overview-dot {
+      cursor: default;
+    }
+
+    .overview-dot.active {
+      width: 28px;
+      height: 28px;
+      font-size: 0.74rem;
+      z-index: 4;
+      box-shadow: 0 0 0 7px rgba(215, 25, 98, 0.14), 0 8px 18px rgba(24, 32, 42, 0.24);
+    }
+
+    .overview-dot.dragging {
+      cursor: grabbing;
+      z-index: 5;
+    }
+
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .actions,
+      .slider-row,
+      .hint {
+        display: none;
+      }
+
+      .app {
+        width: 100%;
+        padding: 0;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+        box-shadow: none;
+      }
+
+      .map,
+      .panel,
+      .overview {
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar,
+      .layout {
+        display: block;
+      }
+
+      .actions {
+        justify-content: flex-start;
+        margin-top: 14px;
+      }
+
+      .panel {
+        position: static;
+        margin-bottom: 16px;
+      }
+
+      .overview-head {
+        display: block;
+      }
+
+      .legend {
+        justify-content: flex-start;
+        margin-top: 12px;
+      }
+
+      .overview-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .overview-endpoint.right {
+        text-align: left;
+      }
+
+      .slider-row {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+      }
+
+      .bar {
+        height: 46px;
+      }
+
+      .center-label {
+        top: 11px;
+        transform: translateX(-50%);
+        font-size: 0.9rem;
+      }
+
+      .left-label,
+      .right-label {
+        top: auto;
+        bottom: 8px;
+        transform: none;
+        max-width: 42%;
+        font-size: 0.84rem;
+      }
+
+    }
+  </style>
+</head>
+<body class="locked">
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <h1>Culture Map Group Marker</h1>
+        <p class="subtitle" id="modeDescription">Individual culture points are fixed. Group ranges are locked for the final team view.</p>
+      </div>
+      <div class="actions">
+        <span class="lock-badge" id="modeBadge">Group ranges locked</span>
+        <button class="button" id="rangeModeButton" type="button">Unlock group ranges</button>
+        <button class="button primary" id="printButton" type="button">Print / Save PDF</button>
+      </div>
+    </header>
+
+    <section class="overview" aria-labelledby="overviewTitle">
+      <div class="overview-head">
+        <div>
+          <h2 id="overviewTitle">Team Overview</h2>
+          <p class="overview-note" id="overviewNote">Colored dots show fixed individual positions. The pink interval shows the final group range for each dimension.</p>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="overview-grid" id="overview"></div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel">
+        <h2>Group Members</h2>
+        <div class="person-list" id="personList"></div>
+        <p class="hint">This final version is locked. Values closer to the left match the left-side option; values closer to the right match the right-side option.</p>
+      </aside>
+
+      <section class="map" id="map"></section>
+    </section>
+  </main>
+
+  <script>
+    const dimensions = [
+      { key: "communicating", title: "COMMUNICATING", left: "Low Context", right: "High Context" },
+      { key: "evaluating", title: "EVALUATING", left: "Direct Negative Feedback", right: "Indirect Negative Feedback" },
+      { key: "leading", title: "LEADING", left: "Egalitarian", right: "Hierarchical" },
+      { key: "deciding", title: "DECIDING", left: "Consensual", right: "Top-Down" },
+      { key: "trusting", title: "TRUSTING", left: "Task-Based", right: "Relationship-based" },
+      { key: "disagreeing", title: "DISAGREEING", left: "Confrontational", right: "Avoids confrontation" },
+      { key: "scheduling", title: "SCHEDULING", left: "Linear Time", right: "Flexible Time" },
+      { key: "persuading", title: "PERSUADING", left: "Principles First", right: "Applications First" }
+    ];
+
+    const colors = ["#1976d2", "#ef6c00", "#2e7d32", "#7b1fa2", "#c2185b", "#00838f", "#5d4037"];
+    const defaultPeople = ["Member 1", "Member 2", "Member 3", "Member 4", "Member 5", "Member 6", "Member 7"];
+    const restoredPeople = ["Brooke", "yui", "yewon", "Swann", "eungyo", "taeyeon", "xin"];
+    const fallbackScores = {
+      communicating: [89, 80, 46, 83, 68, 85, 58],
+      evaluating: [79, 80, 82, 77, 63, 23, 67],
+      leading: [9, 12, 57, 62, 59, 16, 30],
+      deciding: [2, 4, 56, 39, 66, 27, 41],
+      trusting: [59, 56, 45, 50, 74, 52, 50],
+      disagreeing: [100, 97, 93, 95, 68, 18, 60],
+      scheduling: [87, 82, 56, 70, 25, 75, 85],
+      persuading: [87, 82, 44, 47, 25, 38, 77]
+    };
+    const storageKey = "culture-map-group-v1";
+    const locked = true;
+
+    const state = loadState();
+    const personList = document.querySelector("#personList");
+    const map = document.querySelector("#map");
+    const overview = document.querySelector("#overview");
+    const legend = document.querySelector("#legend");
+    const rangeModeButton = document.querySelector("#rangeModeButton");
+    const modeBadge = document.querySelector("#modeBadge");
+    const modeDescription = document.querySelector("#modeDescription");
+    const overviewNote = document.querySelector("#overviewNote");
+    let saveTimer;
+    let activePerson = 0;
+    let dragState = null;
+    let rangeDragState = null;
+    let rangeEditing = false;
+
+    function loadState() {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (error) {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      return {
+        people: defaultPeople,
+        scores: structuredClone(fallbackScores),
+        groupRanges: createDefaultRanges()
+      };
+    }
+
+    function createDefaultRanges() {
+      return {
+        communicating: [49, 57],
+        evaluating: [69, 75],
+        leading: [32, 39],
+        deciding: [30, 37],
+        trusting: [55, 65],
+        disagreeing: [78, 85],
+        scheduling: [66, 74],
+        persuading: [49, 58]
+      };
+    }
+
+    function ensureStateShape() {
+      const hasCompleteScores = state.scores && dimensions.every((dimension) => {
+        const scores = state.scores[dimension.key];
+        return Array.isArray(scores) && scores.length === defaultPeople.length;
+      });
+      const isResetDefault = Array.isArray(state.people)
+        && state.people.every((name, index) => name === defaultPeople[index])
+        && hasCompleteScores
+        && dimensions.every((dimension) => state.scores[dimension.key].every((score) => Number(score) === 50));
+
+      if (isResetDefault || !hasCompleteScores) {
+        state.people = [...restoredPeople];
+        state.scores = structuredClone(fallbackScores);
+      } else if (!Array.isArray(state.people) || state.people.length !== defaultPeople.length) {
+        state.people = [...restoredPeople];
+      }
+
+      if (!state.groupRanges || typeof state.groupRanges !== "object") {
+        state.groupRanges = createDefaultRanges();
+      }
+
+      dimensions.forEach((dimension) => {
+        if (!Array.isArray(state.groupRanges[dimension.key]) || state.groupRanges[dimension.key].length !== 2) {
+          state.groupRanges[dimension.key] = createDefaultRanges()[dimension.key];
+        }
+        state.groupRanges[dimension.key] = state.groupRanges[dimension.key]
+          .map((value) => Math.max(0, Math.min(100, Number(value) || 0)))
+          .sort((a, b) => a - b);
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveState, 120);
+    }
+
+    function renderPeople() {
+      personList.innerHTML = "";
+      state.people.forEach((name, index) => {
+        const row = document.createElement("label");
+        row.className = "person";
+        if (!locked && index === activePerson) {
+          row.classList.add("active");
+        }
+        row.innerHTML = `
+          <span class="swatch" style="background:${colors[index]}"></span>
+          <input value="${escapeHtml(name)}" aria-label="Member ${index + 1} name" ${locked ? "disabled" : ""}>
+        `;
+
+        if (!locked) {
+          row.addEventListener("click", () => {
+            setActivePerson(index);
+          });
+        }
+
+        if (!locked) {
+          row.querySelector("input").addEventListener("input", (event) => {
+            state.people[index] = event.target.value || `Member ${index + 1}`;
+            saveState();
+            renderOverview();
+            renderMap();
+          });
+        }
+
+        personList.appendChild(row);
+      });
+    }
+
+    function renderOverview() {
+      legend.innerHTML = "";
+      overview.innerHTML = "";
+
+      state.people.forEach((name, index) => {
+        const item = document.createElement("span");
+        item.className = "legend-item";
+        item.innerHTML = `
+          <span class="swatch" style="width:10px;height:10px;border-width:1px;background:${colors[index]}"></span>
+          <span>${index + 1}. ${escapeHtml(name)}</span>
+        `;
+        legend.appendChild(item);
+      });
+
+      dimensions.forEach((dimension) => {
+        const scores = state.scores[dimension.key];
+        const average = scores.reduce((total, score) => total + score, 0) / scores.length;
+        const row = document.createElement("div");
+        row.className = "overview-row";
+        row.innerHTML = `
+          <div class="overview-endpoint">${dimension.left}</div>
+          <div class="overview-track" data-overview-track="${dimension.key}">
+            <span class="midline"></span>
+            ${renderRangeMarkup(dimension.key, rangeEditing)}
+            <span class="overview-title">${dimension.title}</span>
+            <span class="average-line" data-average="${dimension.key}" style="left:${average}%"></span>
+          </div>
+          <div class="overview-endpoint right">${dimension.right}</div>
+        `;
+
+        const track = row.querySelector(".overview-track");
+        state.people.forEach((name, personIndex) => {
+          const score = scores[personIndex];
+          const dot = document.createElement("span");
+          dot.className = "overview-dot";
+          dot.dataset.dimension = dimension.key;
+          dot.dataset.person = personIndex;
+          dot.style.left = `${score}%`;
+          dot.style.background = colors[personIndex];
+          dot.title = `${name}: ${score}`;
+          dot.textContent = personIndex + 1;
+          if (!locked && personIndex === activePerson) {
+            dot.classList.add("active");
+          }
+          if (!locked) {
+            dot.addEventListener("pointerdown", startOverviewDrag);
+          }
+          track.appendChild(dot);
+        });
+
+        if (!locked) {
+          track.addEventListener("pointerdown", (event) => {
+            if (event.target.classList.contains("overview-dot")) {
+              return;
+            }
+            moveOverviewPerson(event, dimension.key, activePerson);
+            startTrackDrag(event, dimension.key, activePerson);
+          });
+        }
+
+        if (rangeEditing) {
+          track.querySelectorAll(".range-handle").forEach((handle) => {
+            handle.addEventListener("pointerdown", startRangeDrag);
+          });
+        }
+
+        overview.appendChild(row);
+      });
+    }
+
+    function renderRangeMarkup(dimensionKey, editable = true) {
+      const [start, end] = state.groupRanges[dimensionKey];
+      const handles = editable
+        ? `
+        <span class="range-handle" data-range-handle="start" data-range-dimension="${dimensionKey}" style="left:${start}%" title="Group range start"></span>
+        <span class="range-handle" data-range-handle="end" data-range-dimension="${dimensionKey}" style="left:${end}%" title="Group range end"></span>
+      `
+        : "";
+      return `
+        <span class="group-range" data-range-fill="${dimensionKey}" style="left:${start}%;width:${end - start}%"></span>
+        <span class="range-label" data-range-label="${dimensionKey}" style="left:${(start + end) / 2}%">${start}-${end}</span>
+        ${handles}
+      `;
+    }
+
+    function renderMap() {
+      map.innerHTML = "";
+
+      dimensions.forEach((dimension) => {
+        const section = document.createElement("article");
+        section.className = "dimension";
+        section.innerHTML = `
+          <div class="bar">
+            <span class="bar-label left-label">${dimension.left}</span>
+            <span class="bar-label center-label">${dimension.title}</span>
+            <span class="bar-label right-label">${dimension.right}</span>
+          </div>
+          <div class="track" data-track="${dimension.key}" aria-hidden="true">
+            <span class="midline"></span>
+            ${renderRangeMarkup(dimension.key, false)}
+          </div>
+          <div class="scale">
+            <span>0</span>
+            <span>50</span>
+            <span>100</span>
+          </div>
+          <div class="slider-row"></div>
+        `;
+
+        const track = section.querySelector(".track");
+        const sliderRow = section.querySelector(".slider-row");
+
+        state.people.forEach((name, personIndex) => {
+          const score = state.scores[dimension.key][personIndex];
+          const dot = document.createElement("span");
+          dot.className = "dot";
+          dot.dataset.dimension = dimension.key;
+          dot.dataset.person = personIndex;
+          dot.style.left = `${score}%`;
+          dot.style.background = colors[personIndex];
+          dot.title = `${name}: ${score}`;
+          dot.textContent = personIndex + 1;
+          track.appendChild(dot);
+
+          const control = document.createElement("label");
+          control.className = "choice";
+          control.innerHTML = `
+            <span class="choice-name">
+              <span class="swatch" style="background:${colors[personIndex]}"></span>
+              <span>${escapeHtml(name)}</span>
+            </span>
+            <input type="range" min="0" max="100" value="${score}" data-dimension="${dimension.key}" data-person="${personIndex}" aria-label="${dimension.title} ${name}">
+          `;
+
+          control.querySelector("input").disabled = locked;
+
+          if (!locked) {
+            control.querySelector("input").addEventListener("input", (event) => {
+              updateScore(dimension.key, personIndex, Number(event.target.value));
+              scheduleSave();
+            });
+          }
+
+          sliderRow.appendChild(control);
+        });
+
+        map.appendChild(section);
+      });
+    }
+
+    function updateScore(dimensionKey, personIndex, score) {
+      state.scores[dimensionKey][personIndex] = score;
+
+      document
+        .querySelectorAll(`[data-dimension="${dimensionKey}"][data-person="${personIndex}"]`)
+        .forEach((dot) => {
+          dot.style.left = `${score}%`;
+          dot.title = `${state.people[personIndex]}: ${score}`;
+        });
+
+      const scores = state.scores[dimensionKey];
+      const average = scores.reduce((total, value) => total + value, 0) / scores.length;
+      const averageLine = document.querySelector(`[data-average="${dimensionKey}"]`);
+      if (averageLine) {
+        averageLine.style.left = `${average}%`;
+      }
+    }
+
+    function updateGroupRange(dimensionKey, edge, value) {
+      const range = state.groupRanges[dimensionKey];
+      const minGap = 4;
+      const score = Math.max(0, Math.min(100, Math.round(value)));
+
+      if (edge === "start") {
+        range[0] = Math.min(score, range[1] - minGap);
+      } else {
+        range[1] = Math.max(score, range[0] + minGap);
+      }
+
+      range[0] = Math.max(0, range[0]);
+      range[1] = Math.min(100, range[1]);
+
+      const [start, end] = range;
+      const fills = document.querySelectorAll(`[data-range-fill="${dimensionKey}"]`);
+      const labels = document.querySelectorAll(`[data-range-label="${dimensionKey}"]`);
+      const startHandle = document.querySelector(`[data-range-dimension="${dimensionKey}"][data-range-handle="start"]`);
+      const endHandle = document.querySelector(`[data-range-dimension="${dimensionKey}"][data-range-handle="end"]`);
+
+      fills.forEach((fill) => {
+        fill.style.left = `${start}%`;
+        fill.style.width = `${end - start}%`;
+      });
+
+      labels.forEach((label) => {
+        label.style.left = `${(start + end) / 2}%`;
+        label.textContent = `${start}-${end}`;
+      });
+
+      if (startHandle) {
+        startHandle.style.left = `${start}%`;
+      }
+
+      if (endHandle) {
+        endHandle.style.left = `${end}%`;
+      }
+    }
+
+    function setActivePerson(personIndex) {
+      activePerson = personIndex;
+      document.querySelectorAll(".person").forEach((person, index) => {
+        person.classList.toggle("active", index === activePerson);
+      });
+      document.querySelectorAll(".overview-dot").forEach((dot) => {
+        dot.classList.toggle("active", Number(dot.dataset.person) === activePerson);
+      });
+    }
+
+    function startOverviewDrag(event) {
+      event.preventDefault();
+      const dot = event.currentTarget;
+      const dimensionKey = dot.dataset.dimension;
+      const personIndex = Number(dot.dataset.person);
+      setActivePerson(personIndex);
+      dot.classList.add("dragging");
+      startTrackDrag(event, dimensionKey, personIndex);
+    }
+
+    function startTrackDrag(event, dimensionKey, personIndex) {
+      const track = document.querySelector(`[data-overview-track="${dimensionKey}"]`);
+      dragState = { dimensionKey, personIndex, track };
+      track.setPointerCapture?.(event.pointerId);
+      window.addEventListener("pointermove", handleOverviewDrag);
+      window.addEventListener("pointerup", stopOverviewDrag, { once: true });
+    }
+
+    function handleOverviewDrag(event) {
+      if (!dragState) {
+        return;
+      }
+      moveOverviewPerson(event, dragState.dimensionKey, dragState.personIndex);
+    }
+
+    function stopOverviewDrag() {
+      document.querySelectorAll(".overview-dot.dragging").forEach((dot) => {
+        dot.classList.remove("dragging");
+      });
+      dragState = null;
+      saveState();
+      window.removeEventListener("pointermove", handleOverviewDrag);
+    }
+
+    function moveOverviewPerson(event, dimensionKey, personIndex) {
+      const track = document.querySelector(`[data-overview-track="${dimensionKey}"]`);
+      const rect = track.getBoundingClientRect();
+      const ratio = (event.clientX - rect.left) / rect.width;
+      const score = Math.max(0, Math.min(100, Math.round(ratio * 100)));
+      updateScore(dimensionKey, personIndex, score);
+      const slider = document.querySelector(`input[type="range"][data-dimension="${dimensionKey}"][data-person="${personIndex}"]`);
+      if (slider) {
+        slider.value = score;
+      }
+      scheduleSave();
+    }
+
+    function startRangeDrag(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const handle = event.currentTarget;
+      const dimensionKey = handle.dataset.rangeDimension;
+      rangeDragState = {
+        dimensionKey,
+        edge: handle.dataset.rangeHandle,
+        track: document.querySelector(`[data-overview-track="${dimensionKey}"]`)
+      };
+      handle.classList.add("dragging");
+      rangeDragState.track.setPointerCapture?.(event.pointerId);
+      window.addEventListener("pointermove", handleRangeDrag);
+      window.addEventListener("pointerup", stopRangeDrag, { once: true });
+      moveGroupRange(event);
+    }
+
+    function handleRangeDrag(event) {
+      if (!rangeDragState) {
+        return;
+      }
+      moveGroupRange(event);
+    }
+
+    function moveGroupRange(event) {
+      const rect = rangeDragState.track.getBoundingClientRect();
+      const ratio = (event.clientX - rect.left) / rect.width;
+      updateGroupRange(rangeDragState.dimensionKey, rangeDragState.edge, ratio * 100);
+      scheduleSave();
+    }
+
+    function stopRangeDrag() {
+      document.querySelectorAll(".range-handle.dragging").forEach((handle) => {
+        handle.classList.remove("dragging");
+      });
+      rangeDragState = null;
+      saveState();
+      window.removeEventListener("pointermove", handleRangeDrag);
+    }
+
+    function setRangeMode(editing) {
+      rangeEditing = editing;
+      state.rangeEditing = editing;
+      document.body.classList.toggle("range-editing", editing);
+      modeBadge.textContent = editing ? "Group ranges editable" : "Group ranges locked";
+      modeBadge.classList.toggle("editing", editing);
+      rangeModeButton.textContent = editing ? "Lock group ranges" : "Unlock group ranges";
+      modeDescription.textContent = editing
+        ? "Individual culture points are fixed. Drag the pink handles to adjust each group range."
+        : "Individual culture points are fixed. Group ranges are locked for the final team view.";
+      overviewNote.textContent = editing
+        ? "Colored dots are fixed. Drag the two pink handles to set the group range for each dimension."
+        : "Colored dots show fixed individual positions. The pink interval shows the final group range for each dimension.";
+      saveState();
+      renderOverview();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    document.querySelector("#printButton").addEventListener("click", () => window.print());
+    rangeModeButton.addEventListener("click", () => setRangeMode(!rangeEditing));
+
+    ensureStateShape();
+    rangeEditing = Boolean(state.rangeEditing);
+    saveState();
+    renderPeople();
+    setRangeMode(rangeEditing);
+    renderMap();
+    if (!locked) {
+      setActivePerson(activePerson);
+    }
+  </script>
+</body>
+</html>
