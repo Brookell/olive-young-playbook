@@ -489,7 +489,7 @@
             <a href="olive-young-france-research.html" target="_blank" rel="noopener">Open the brief ↗</a></div></div>
         <div class="card work"><div class="band t"><span><b>Culture Map Group Marker</b><small>Collaboration tool</small></span><span>03</span></div>
           <div class="body"><p>Each of us placed our own dot on Erin Meyer’s eight dimensions; then we dragged the group ranges together and locked them.</p>
-            <div class="facts"><span>7 of 8 members so far</span><span>8 dimensions</span><span>Linked from slides 13 and 20</span></div>
+            <div class="facts"><span>7 members</span><span>8 dimensions</span><span>Linked from slides 13 and 20</span></div>
             <a href="culture-map-group-marker.html" target="_blank" rel="noopener">Open the tool ↗</a></div></div>
         <div class="card work"><div class="band g"><span><b>Team hub</b><small>This page</small></span><span>04</span></div>
           <div class="body"><p>Roles, example scripts, the to-do list and links to everything. Updated by Brooke when roles and content come in.</p>
@@ -627,7 +627,6 @@
     { s: "done", t: "AI slides and Culture Map tool links", o: "Brooke" },
     { s: "done", t: "Speaker scripts in this hub", o: "Brooke" },
     { s: "urgent", t: "Agree on roles in the group chat", o: "Everyone", d: "Tue 10, 22:00" },
-    { s: "todo", t: "Minjeong: send your 8 Culture Map scores", o: "Minjeong", d: "Wed 11" },
     { s: "urgent", t: "Send your background + “what I bring” line", o: "Everyone", d: "Wed 11, evening" },
     { s: "urgent", t: "Blazon content: achievements, qualities, difficulty, motto", o: "D + everyone", d: "Wed 11, evening" },
     { s: "urgent", t: "2–3 real team moments for the scenarios", o: "F + everyone", d: "Wed 11, evening" },
@@ -754,7 +753,7 @@
       const role = r ? roles.find(x => x.r === r) : null;
       const from = memberFrom[m];
       return `<div class="card member">
-        <div class="m-top"><span class="m-av" style="background:${memberColors[i]}">${m[0].toUpperCase()}</span><span><b>${m}</b><small>Culture Map colour</small></span></div>
+        <div class="m-top"><span class="m-av" style="background:${memberColors[i]}">${m[0].toUpperCase()}</span><span><b>${m}</b><small>${m === "Minjeong" ? "Not on the Culture Map" : "Culture Map colour"}</small></span></div>
         <div class="m-rows">
           <div class="m-row"><span>From</span>${from ? `<span>${from}</span>` : `<span class="tbd">To fill</span>`}</div>
           <div class="m-row"><span>Role</span>${role ? `<span class="m-role"><span class="ltr">${role.r}</span>${role.t}</span>` : `<span class="tbd">Not chosen yet</span>`}</div>
