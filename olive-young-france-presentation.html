@@ -296,12 +296,18 @@
   .vt-tag.r { left: auto; right: 30px; }
 
   /* ---------- blazon ---------- */
-  .blazon { flex: 1; display: grid; grid-template-columns: 1fr 340px 1fr; gap: 22px; margin-top: 36px; align-items: stretch; }
-  .bz-col { display: grid; grid-template-rows: 1fr 1fr; gap: 22px; }
+  .blazon { flex: 1; display: grid; grid-template-columns: 1fr 340px 1fr; gap: 18px; margin-top: 30px; margin-bottom: 18px; align-items: stretch; min-height: 0; grid-template-rows: minmax(0, 1fr) auto; }
+  .bz-col, .shield { min-height: 0; }
+  .shield svg { max-height: 100%; }
+  .bz-col { display: grid; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
   .bz-col .core p { font-size: 18px; line-height: 1.5; color: var(--ink-2); font-weight: 300; margin-top: 12px; }
   .shield { display: grid; place-items: center; position: relative; }
   .shield svg { width: 300px; height: 360px; }
   .shield .motto { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; padding: 0 64px; font-family: var(--serif); font-size: 26px; font-style: italic; color: #fff; line-height: 1.2; }
+  .bz-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .bz-list li { font-size: 16.5px; line-height: 1.38; color: var(--ink-2); font-weight: 300; padding-left: 18px; position: relative; }
+  .bz-list li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--lime); }
+  .shield .motto-k { display: block; margin-bottom: 10px; font-family: var(--sans); font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--lime); }
   .wish { grid-column: 1 / -1; }
   .wish .core { display: flex; align-items: center; gap: 22px; padding: 22px 30px; }
   .wish p { font-family: var(--serif); font-size: 26px; }
@@ -787,8 +793,8 @@
       <h2 class="in d2">Who we are, <em>honestly</em></h2>
       <div class="blazon">
         <div class="bz-col">
-          <div class="shell in d3"><div class="core"><span class="label">3 group achievements</span><p><span class="tbd">To fill</span></p></div></div>
-          <div class="shell in d4"><div class="core"><span class="label">What we like most in our group life</span><p><span class="tbd">To fill</span></p></div></div>
+          <div class="shell in d3"><div class="core"><span class="label">3 group achievements</span><ul class="bz-list"><li>Creating our own collaboration playbook</li><li>Using diverse perspectives to spark creative K&#8209;beauty marketing ideas</li><li>Developing our 12-month action plan</li></ul></div></div>
+          <div class="shell in d4"><div class="core"><span class="label">What we like most in our group life</span><p>Diverse backgrounds bringing fresh ideas and mutual growth to every meeting</p></div></div>
         </div>
         <div class="shield in d3">
           <svg viewBox="0 0 300 360" aria-hidden="true">
@@ -796,13 +802,13 @@
             <path d="M150 8 L286 50 V170 C286 260 222 322 150 352 C78 322 14 260 14 170 V50 Z" fill="url(#sg)"/>
             <path d="M150 24 L270 61 V170 C270 250 214 306 150 334 C86 306 30 250 30 170 V61 Z" fill="none" stroke="#9CC93A" stroke-opacity=".5" stroke-width="1.5"/>
           </svg>
-          <div class="motto">“Our motto<br><span style="font-size:15px;opacity:.7;font-family:var(--sans);font-style:normal">(to fill)</span>”</div>
+          <div class="motto"><span class="motto-k">Our motto</span>United in Diversity, Driven by Growth</div>
         </div>
         <div class="bz-col">
-          <div class="shell in d5"><div class="core"><span class="label">3 “hidden” qualities</span><p><span class="tbd">To fill</span></p></div></div>
-          <div class="shell in d6"><div class="core lime"><span class="label">What we find most difficult now</span><p><span class="tbd">To fill</span></p></div></div>
+          <div class="shell in d5"><div class="core"><span class="label">3 “hidden” qualities</span><ul class="bz-list"><li>Comfortable and open about sharing our own opinions</li><li>Checking right away when something is unclear, to prevent misunderstandings</li><li>Capacity for mutual empathy and inclusion</li></ul></div></div>
+          <div class="shell in d6"><div class="core lime"><span class="label">What we find most difficult now</span><p>Respecting each member’s cultural style while delivering one cohesive team output on time</p></div></div>
         </div>
-        <div class="shell wish in d7"><div class="core"><span class="label">In our group, we would like that…</span><p><span class="tbd">To fill</span></p></div></div>
+        <div class="shell wish in d7"><div class="core"><span class="label">In our group…</span><p>we communicate openly and support each other.</p></div></div>
       </div>
     </section>
 
