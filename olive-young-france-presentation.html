@@ -380,6 +380,17 @@
   .core.dark li { color: rgba(242, 244, 234, .88); }
   .tl .ex { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--paper-2); font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
   .core.dark .ex { background: rgba(255, 255, 255, .08); color: rgba(242, 244, 234, .9); }
+  .tl-sub { margin-top: 10px; font-size: 19px; color: var(--muted); font-weight: 300; }
+  .tl-sub + .tl { margin-top: 20px; }
+  .plan19 .tl .core { padding: 22px 24px; }
+  .plan19 .tl h3 { margin: 6px 0 12px; }
+  .plan19 .tl ul { gap: 6px; }
+  .plan19 .tl .ex { margin-top: 10px; padding: 9px 12px; }
+  .plan19 .tl .kpi { padding-top: 10px; }
+  .plan19 .tl .own { margin-top: 8px; }
+  .rhythm { margin: 14px 0 38px; display: flex; justify-content: space-between; align-items: center; padding: 11px 28px; border-radius: 999px; background: var(--olive); color: #F2F4EA; font-size: 16px; font-weight: 300; }
+  .rhythm .label { color: var(--lime); }
+  .rhythm b { color: var(--lime); font-weight: 600; }
   .tl .kpi { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; line-height: 1.5; }
   .core.dark .kpi { border-top-color: rgba(255, 255, 255, .14); }
   .tl .kpi .label { display: block; margin-bottom: 4px; }
@@ -883,44 +894,46 @@
       </div>
     </section>
 
-    <!-- 12 · 12-month plan -->
-    <section class="slide" data-speaker="G · Operations">
-      <span class="eyebrow in d1"><i></i>First 12 months · Action plan</span>
-      <h2 class="in d2">From test to <em>second city</em></h2>
+    <!-- 12 · 12-month team plan -->
+    <section class="slide plan19" data-speaker="G · Operations">
+      <span class="eyebrow in d1"><i></i>First 12 months · Team action plan</span>
+      <h2 class="in d2">How our team stays <em>efficient</em>, month after month</h2>
+      <p class="tl-sub in d2">How eight people from different cultures keep working well together.</p>
       <div class="tl">
         <div class="shell in d3"><div class="core">
-          <div class="tl-m"><b>M1–3</b><span class="label">Set up</span></div>
-          <h3>Listen &amp; build</h3>
-          <ul><li>Routine finder prototype</li><li>Paris test group</li><li>EU compliance: CPNP, French labels</li><li>Decision log</li></ul>
-          <div class="ex">e.g. 50 interviews shape 3 kits</div>
-          <div class="kpi"><span class="label">KPI</span>50 interviews · every task owned</div>
-          <div class="own"><span class="role">B</span>Lead: Market &amp; Product<em>Support: H (finder) · G (decision log)</em></div>
+          <div class="tl-m"><b>M1–3</b><span class="label">Install</span></div>
+          <h3>Make the rules a habit</h3>
+          <ul><li>Game rules in the team hub, read by all</li><li>Biweekly check-ins</li><li>Everyone re-places their dots on the Culture Map</li></ul>
+          <div class="ex">e.g. a recap sent within 24h of each meeting</div>
+          <div class="kpi"><span class="label">KPI</span>Every meeting recapped · every task owned</div>
+          <div class="own"><span class="role">A</span>Lead: Note-taker</div>
         </div></div>
         <div class="shell in d4"><div class="core dark">
-          <div class="tl-m"><b>M4–6</b><span class="label">Pop-up</span></div>
-          <h3>Paris Discovery Lab</h3>
-          <ul><li>Pop-up with consultations</li><li>Test 3 upgrade kits</li><li>Challenge round before launch</li></ul>
-          <div class="ex">e.g. book online → 20-min consult → kit</div>
-          <div class="kpi"><span class="label">KPI</span>Consult-to-purchase rate</div>
-          <div class="own"><span class="role">G</span>Lead: Operations<em>Support: B (products) · F (challenge round)</em></div>
+          <div class="tl-m"><b>M4–6</b><span class="label">Test</span></div>
+          <h3>Practise under pressure</h3>
+          <ul><li>Challenge round before every big decision</li><li>Private feedback within 24h</li><li>First team health check, one question per Trust Pyramid layer</li></ul>
+          <div class="ex">e.g. a clash of calendars solved by the buffer</div>
+          <div class="kpi"><span class="label">KPI</span>Feedback given in 24h · deadlines met</div>
+          <div class="own"><span class="role">F</span>Lead: Facilitator</div>
         </div></div>
         <div class="shell in d5"><div class="core">
-          <div class="tl-m"><b>M7–9</b><span class="label">Improve</span></div>
-          <h3>Learn from data</h3>
-          <ul><li>Improve the finder</li><li>Team dashboard</li><li>Rotate chair</li></ul>
-          <div class="ex">e.g. top question → new finder step</div>
-          <div class="kpi"><span class="label">KPI</span>Repeat purchase rate</div>
-          <div class="own"><span class="role">H</span>Lead: AI &amp; Quality<em>Support: A (chair rotation)</em></div>
+          <div class="tl-m"><b>M7–9</b><span class="label">Adjust</span></div>
+          <h3>Review and rotate</h3>
+          <ul><li>Mid-year retrospective: what works, what doesn’t</li><li>Rewrite rules that don’t fit us</li><li>Rotating chair: everyone leads once</li><li>New task buddy pairs across cultures</li></ul>
+          <div class="ex">e.g. a rule changed after the retrospective</div>
+          <div class="kpi"><span class="label">KPI</span>Each member chaired once · rules updated</div>
+          <div class="own"><span class="role">C</span>Lead: Team Host</div>
         </div></div>
         <div class="shell in d6"><div class="core lime">
-          <div class="tl-m"><b>M10–12</b><span class="label">Scale</span></div>
-          <h3>Decide &amp; document</h3>
-          <ul><li>Second-city decision</li><li>Training playbook</li><li>Review team rules</li></ul>
-          <div class="ex">e.g. Paris vs. other cities</div>
-          <div class="kpi"><span class="label">KPI</span>Data-backed next city</div>
-          <div class="own"><span class="role">E</span>Lead: Culture Map<em>Support: D (training playbook)</em></div>
+          <div class="tl-m"><b>M10–12</b><span class="label">Pass on</span></div>
+          <h3>Document and transfer</h3>
+          <ul><li>Second health check, compared with M4–6</li><li>Updated Culture Map and game rules</li><li>Training playbook for any new member</li><li>Year-end review of team results</li></ul>
+          <div class="ex">e.g. a new member onboarded by a buddy</div>
+          <div class="kpi"><span class="label">KPI</span>Health check improved · playbook ready</div>
+          <div class="own"><span class="role">E</span>Lead: Culture Map</div>
         </div></div>
       </div>
+      <div class="rhythm in d7"><span class="label">Our rhythm</span><span><b>Weekly</b> task board</span><span><b>Biweekly</b> check-in</span><span><b>Monthly</b> team scorecard</span><span><b>Quarterly</b> health check</span></div>
     </section>
 
     <!-- 13 · AI (1/2) -->
@@ -999,7 +1012,7 @@
         <div class="rc in d4"><b>02</b><span class="rq">What makes us unique?</span><p>One shared purpose, and eight values we chose together.</p></div>
         <div class="rc in d5"><b>03</b><span class="rq">Where do we differ?</span><p>Mostly in how we disagree, how we decide and how we plan time.</p></div>
         <div class="rc in d6"><b>04</b><span class="rq">How do we turn that into strength?</span><p>One simple rule for each gap, like a challenge round before big decisions.</p></div>
-        <div class="rc in d7"><b>05</b><span class="rq">How do we stay efficient?</span><p>Trust built step by step, and a 12-month plan with an owner for every task.</p></div>
+        <div class="rc in d7"><b>05</b><span class="rq">How do we stay efficient?</span><p>Trust built step by step, and a 12-month team plan with a lead for every phase.</p></div>
       </div>
     </section>
 
@@ -1082,14 +1095,14 @@
     </div>`).join("");
 
   const roles = [
-    { r: "A", n: "Eungyo", f: "Korea", t: "Opener", s: "Slides 1–4", o: ["Opening and mission", "Meeting notes"] },
-    { r: "B", n: "Yui", f: "Japan", t: "Market & Product Lead", s: "Slides 5–6", o: ["Market and product", "M1–3 customer research"] },
-    { r: "C", n: "Taeyeon", f: "Korea", t: "Team Host", s: "Slides 7–8 · 18", o: ["Team introduction", "Trust Pyramid"] },
-    { r: "D", n: "Yewon", f: "Korea", t: "Identity Lead", s: "Slides 9–11", o: ["Vision Tree and Blazon", "M10–12 training playbook"] },
-    { r: "E", n: "Minjeong", f: "Korea", t: "Culture Map Analyst", s: "Slides 12–13", o: ["Our differences", "M10–12 rules review"] },
-    { r: "F", n: "Xin", f: "China", t: "Facilitator", s: "Slides 14–16", o: ["Rules and scenarios", "Challenge rounds"] },
-    { r: "G", n: "Swann", f: "France", t: "Operations Lead", s: "Slides 17 · 19", o: ["12-month plan", "M4–6 pop-up, task board"] },
-    { r: "H", n: "Brooke", f: "China", t: "AI & Quality Lead", s: "Slides 20–23", o: ["AI and closing", "M7–9 data, scorecard"] }
+    { r: "A", n: "Eungyo", f: "Korea", t: "Opener", s: "Slides 1–4", o: ["Opening and mission", "M1–3 lead: rules as a habit"] },
+    { r: "B", n: "Yui", f: "Japan", t: "Market & Product Lead", s: "Slides 5–6", o: ["Market and product", "Kit and customer journey"] },
+    { r: "C", n: "Taeyeon", f: "Korea", t: "Team Host", s: "Slides 7–8 · 18", o: ["Team introduction, Trust Pyramid", "M7–9 lead: review and rotate"] },
+    { r: "D", n: "Yewon", f: "Korea", t: "Identity Lead", s: "Slides 9–11", o: ["Vision Tree and Blazon", "M10–12 support: playbook"] },
+    { r: "E", n: "Minjeong", f: "Korea", t: "Culture Map Analyst", s: "Slides 12–13", o: ["Our differences", "M10–12 lead: pass on"] },
+    { r: "F", n: "Xin", f: "China", t: "Facilitator", s: "Slides 14–16", o: ["Rules and scenarios", "M4–6 lead: challenge rounds"] },
+    { r: "G", n: "Swann", f: "France", t: "Operations Lead", s: "Slides 17 · 19", o: ["12-month team plan", "Our rhythm, task board"] },
+    { r: "H", n: "Brooke", f: "China", t: "AI & Quality Lead", s: "Slides 20–23", o: ["AI and closing", "Monthly team scorecard"] }
   ];
   document.getElementById("team").innerHTML = roles.map((x, i) => `
     <div class="shell in d${3 + (i % 4)}"><div class="core">
