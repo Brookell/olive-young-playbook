@@ -515,6 +515,17 @@
   .rc p { font-size: 21px; line-height: 1.45; font-weight: 300; }
 
   /* ---------- AI v2 ---------- */
+  .aist { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 34px 0 90px; }
+  .aist .core { display: flex; flex-direction: column; gap: 16px; padding: 34px 34px; }
+  .aist-n { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--lime); }
+  .core.lime .aist-n { color: var(--olive); opacity: .55; }
+  .aist h3 { font-size: 34px; }
+  .aist blockquote { font-family: var(--serif); font-size: 30px; line-height: 1.25; font-style: italic; color: var(--olive); padding-left: 16px; border-left: 3px solid var(--lime); margin-top: 6px; }
+  .core.lime .aist blockquote, .aist .core.lime blockquote { border-left-color: var(--olive); }
+  .aist p { margin-top: 4px; font-size: 18px; line-height: 1.5; color: var(--ink-2); font-weight: 300; }
+  .aist .core.dark .vs2 p { margin-top: 0; font-size: 19px; }
+  .aist .core.dark .vs2 { padding-top: 18px; }
+  .aist .core.dark h3 { color: #F2F4EA; }
   .ai2 { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin-top: 28px; }
   .ai2 .core { display: flex; flex-direction: column; gap: 10px; padding: 22px 26px; }
   .t2 { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding-top: 10px; border-top: 1px solid var(--hair); }
@@ -977,34 +988,24 @@
     <section class="slide" data-speaker="H · AI &amp; Quality" data-chapter="x">
       <span class="eyebrow in d1"><i></i>How we used AI · 2/2</span>
       <h2 class="in d2">AI suggested. <em>We decided.</em></h2>
-      <div class="ai2">
+      <div class="aist">
         <div class="shell in d3"><div class="core">
-          <span class="label">Prompts that worked</span>
-          <blockquote>“Do not invent data, target-market facts or claims about AI use.”</blockquote>
-          <blockquote>“Rebuild the deck around the professor’s five questions.”</blockquote>
-          <p class="note">Lesson: clear limits work.</p>
+          <span class="aist-n">01</span>
+          <h3>We set limits</h3>
+          <blockquote>“Don’t invent data.”</blockquote>
+          <p>Clear limits in the prompt gave us better answers.</p>
         </div></div>
-        <div class="shell in d4"><div class="core">
-          <span class="label">What went wrong</span>
-          <ul class="ai-ul">
-            <li><b>Same deck</b> from different AIs → we added our own stories</li>
-            <li><b>Invented claim</b> → deleted</li>
-            <li><b>Conflicting sources</b> → left out</li>
-          </ul>
+        <div class="shell in d4"><div class="core lime">
+          <span class="aist-n">02</span>
+          <h3>We checked everything</h3>
+          <blockquote>“No source, no slide.”</blockquote>
+          <p>AI once invented a claim with no source, so we deleted it. Every fact in our brief is marked Verified or Reported.</p>
         </div></div>
-        <div class="shell in d5"><div class="core lime">
-          <span class="label">How we checked</span>
-          <ul class="ai-ul">
-            <li><b>Every number</b> has a source</li>
-            <li><b>No source, no slide.</b></li>
-            <li><b>Verified / Reported</b> label on every fact in our brief</li>
-            <li><b>The team</b> makes final decisions</li>
-          </ul>
-        </div></div>
-        <div class="shell in d6"><div class="core dark">
-          <span class="label">AI suggested → we decided</span>
-          <div class="vs2"><p>Phone voting game</p><span>→</span><p>Too risky. Simple deck.</p></div>
-          <div class="vs2"><p>Business-plan story</p><span>→</span><p>Built around our team.</p></div>
+        <div class="shell in d5"><div class="core dark">
+          <span class="aist-n">03</span>
+          <h3>We said no</h3>
+          <div class="vs2"><p>Phone voting game</p><span>→</span><p>Simple deck</p></div>
+          <div class="vs2"><p>Business-plan story</p><span>→</span><p>Built around our team</p></div>
         </div></div>
       </div>
     </section>
@@ -1018,7 +1019,7 @@
         <div class="rc in d4"><b>02</b><span class="rq">What makes us unique?</span><p>One shared purpose, and eight values we chose together.</p></div>
         <div class="rc in d5"><b>03</b><span class="rq">Where do we differ?</span><p>Mostly in how we disagree, how we decide and how we plan time.</p></div>
         <div class="rc in d6"><b>04</b><span class="rq">How do we turn that into strength?</span><p>One simple rule for each gap, like a challenge round before big decisions.</p></div>
-        <div class="rc in d7"><b>05</b><span class="rq">How do we stay efficient?</span><p>Trust built step by step, and a 12-month team plan with a lead for every phase.</p></div>
+        <div class="rc in d7"><b>05</b><span class="rq">How do we stay efficient?</span><p>Trust step by step, a 12-month plan with clear leads, and a steady team rhythm.</p></div>
       </div>
     </section>
 
